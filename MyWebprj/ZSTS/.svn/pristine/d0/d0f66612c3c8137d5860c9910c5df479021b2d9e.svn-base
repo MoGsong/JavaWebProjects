@@ -1,0 +1,85 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.service.IAuthorizationservice;
+import com.gxnu.service.IOperatorService;
+import com.gxnu.entity.Authorization;
+import com.gxnu.entity.Menu;
+import com.gxnu.entity.Operator;
+import com.gxnu.entity.Role;
+import com.gxnu.service.imp.Authorizationservice;
+import com.gxnu.service.imp.OperatorService;;
+
+@WebServlet(urlPatterns = { "/authorization" })
+public class AuthorizationAction extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		
+		String op = req.getParameter("OP");
+		
+		if (op != null && "toupdate".equals(op)) {
+			
+			String strrid = req.getParameter("roleid");
+			int roleid = 0;
+			if (strrid != null) {
+				roleid = Integer.parseInt(strrid);
+				
+			}
+			
+			//调用业务方法查询已有权限
+			IAuthorizationservice authorizationservice = new Authorizationservice();
+			List<Authorization> authorizations = authorizationservice.findbyRloe(roleid);
+			
+			req.setAttribute("AUTHORIZATIONS", authorizations);
+			//请求转发
+			req.getRequestDispatcher("web/Step2.jsp").forward(req, resp);
+
+		} else if (op != null && "doupdate".equals(op)) {
+			
+			String strrid = req.getParameter("roleid");
+			int roleid = 0;
+			if (strrid != null) {
+				roleid = Integer.parseInt(strrid);
+				
+			}
+			String[] strmenuids=req.getParameterValues("menus");
+			
+			IAuthorizationservice authorizationservice = new Authorizationservice();
+			List<Authorization> authorizations= authorizationservice.find();
+			
+			for(Authorization authorization: authorizations) {
+				if (authorization.getRole().getId()==roleid) {
+					authorizationservice.remove(authorization.getId());
+				}
+			}
+			//把改后的可访问菜单，添加到权限表
+			for (String strmenuid : strmenuids) {
+				Role role =new Role();
+				role.setId(roleid);
+				Menu menu =new Menu();
+				String yuliu = "test";
+				menu.setId(Integer.parseInt(strmenuid));
+				Authorization authorization =new Authorization(role,menu,yuliu);
+			
+				authorizationservice.add(authorization);
+			}
+			resp.sendRedirect("http://192.168.1.202:8080/ZSTS/web/Step1.jsp");
+		}
+	}
+}

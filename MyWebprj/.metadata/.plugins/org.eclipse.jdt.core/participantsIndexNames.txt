@@ -1,0 +1,47 @@
+INDEX VERSION 1.131
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\848484449.index
+\Talk\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2713835336.index
+\gims\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1387619644.index
+\Webprj710\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3937263941.index
+\GIMS1.0\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3818868971.index
+\GIMS
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1673160289.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1867585584.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2720115378.index
+\Webprj710\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1359322442.index
+\chatroomWebSocket\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3475556394.index
+\gims1\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3316242083.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3307138440.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1007847086.index
+\chatOnline\chatOnline\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1733977846.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1859497468.index
+\ZSTS1\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1563068670.index
+\cims_gjmy\src\main\java
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1466251228.index
+\GIMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2369224681.index
+\ZSTS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4272731304.index
+\OMS\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\294430638.index
+\chatroomWebSocket\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3742580693.index
+\cims_gjmy\src\main\java
+C:\Users\Administrator\Documents\workspace-spring-tool-suite-4-4.2.2.RELEASE\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1387619644.index
+\Webprj710\src
+D:\eclipse\spring eclipse\sts-4.2.2.RELEASE\MyWeb\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4226710680.index
+\Webprj710\src

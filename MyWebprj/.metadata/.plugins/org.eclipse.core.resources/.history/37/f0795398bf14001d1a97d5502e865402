@@ -1,0 +1,19 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.Dialogue;
+
+public interface IDialogueService {
+	public void add(Dialogue menu);
+	//删除对话
+	public void remove(int id);
+	//修改对话
+	public void update(Dialogue menu);
+	//查询对话，单个
+	public Dialogue find(int id);
+	//查询对话，所有
+	public List<Dialogue> find();
+	//根据parent字段查询所有对话信息,若parent=0，则查询得到所有父对话，若parent！=0，则查询
+	public List<Dialogue> findByParent(int parent);
+}

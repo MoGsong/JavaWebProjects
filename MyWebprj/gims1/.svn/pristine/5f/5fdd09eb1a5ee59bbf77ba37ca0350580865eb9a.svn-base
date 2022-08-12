@@ -1,0 +1,87 @@
+<%@page import="com.gxnu.entity.Guide"%>
+<%@page import="java.util.List"%>
+<%@page import="com.gxnu.service.imp.Guideservice"%>
+<%@page import="com.gxnu.service.IGuideservice"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图片管理</title>
+<style>
+body {
+	background-size: cover;
+	background-color: #191e4537;
+	background-repeat: no-repeat;
+	background-position: right top;
+	background-attachment: fixed;
+}
+</style>
+
+</head>
+
+<script>
+	function xg() {
+		window.top.location.href = "http://192.168.1.202:8080/GIMS/web/updateGuide.jsp";
+	}
+	function zj() {
+
+		window.top.location.href = "http://192.168.1.202:8080/GIMS/web/addGuide.jsp";
+	}
+</script>
+<body>
+	<div
+		style="width: 800px; height: 200px; margin: 0px auto; text-align: center;">
+		<h1>图片管理</h1>
+		<div style="text-align: right;">
+			<input type="button" value="添加" onclick="zj()" />
+		</div>
+		<br>
+		<table
+			style="border-style: solid; width: 800px; background-color: white; margin: 0px auto;"
+			border="1">
+			<tr>
+				<td><span>序号</span></td>
+				<td><span>图片</span></td>
+				<td><span>图片名</span></td>
+				<td><span>跳转链接</span></td>
+				<td><span>基本操作</span></td>
+			</tr>
+			<%
+				IGuideservice guideservice = new Guideservice();
+				List<Guide> guides = guideservice.find();
+				int i = 0;
+				for (Guide guide : guides) {
+
+					i++;
+			%>
+			<tr>
+				<td><span><%=i%></span></td>
+				<td>
+					<div align="center">
+						<img 
+							src="http://192.168.1.202:8080/GIMS/web/images/<%=guide.getName()%>"
+							style="width: 40px" /> 
+					</div>
+				</td>
+				<td><input type="text" value="<%=guide.getName()%>"
+					name="pic_name" style="border: none;" /></td>
+
+				<td><input type="text" value="<%=guide.getURL()%>" name="url"
+					style="border: none;" /></td>
+				<td><a
+					href="http://192.168.1.202:8080/GIMS/guide?OP=toupdate&id=<%=guide.getId()%>">编辑</a>&nbsp;&nbsp;
+					<a
+					href="http://192.168.1.202:8080/GIMS/guide?id=<%=guide.getId()%>">删除</a>
+				</td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
+	</div>
+</body>
+</html>

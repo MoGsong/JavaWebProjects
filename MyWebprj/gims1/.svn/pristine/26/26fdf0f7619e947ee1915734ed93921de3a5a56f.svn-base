@@ -1,0 +1,241 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.entity.AboutUs;
+
+/**
+ * “关于我们”DAO的增删改查
+ * @author ymp0519
+ *
+ */
+
+
+public class AboutUsDAO  extends C3P0BaseDAO{
+
+	/**
+	 * 增加“关于我们”,id自增
+	 * @param aboutUs
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void add(AboutUs aboutUs) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = 
+				conn.prepareStatement("insert into aboutUs (name,address,tel,synopsis) values(?,?,?,?)");
+
+		pstmt.setString(1,aboutUs.getName());
+		pstmt.setString(2,aboutUs.getAddress());
+		pstmt.setString(3,aboutUs.getTel());
+		pstmt.setString(4,aboutUs.getSynopsis());
+
+		
+		pstmt.executeUpdate();
+		
+		super.closeConnection(conn);
+	}
+
+	/**
+	 * 根据id,修改“关于我们”
+	 * @param aboutUs 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void merge(AboutUs aboutUs) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = 
+				conn.prepareStatement("update aboutUs set name=?,address=?,tel=?,synopsis=? where id=?");
+		
+		pstmt.setString(1,aboutUs.getName());
+		pstmt.setString(2,aboutUs.getAddress());
+		pstmt.setString(3,aboutUs.getTel());
+		pstmt.setString(4,aboutUs.getSynopsis());
+		pstmt.setInt(5,aboutUs.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	/**
+	 * 根据id,删除“关于我们”
+	 * @param aboutUs
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void delete(AboutUs aboutUs) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("delete from aboutUs where id=?");
+		pstmt.setInt(1, aboutUs.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	
+	public AboutUs read(int id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		AboutUs aboutUs  = new AboutUs();
+		PreparedStatement pstmt = conn.prepareStatement("select * from aboutUs where id = ?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()){ 
+			String name = rs.getString("name");  
+			String address= rs.getString("address");
+			String tel= rs.getString("tel");
+			String synopsis =rs.getString("synopsis");
+
+			aboutUs= new AboutUs(id,name,address,tel,synopsis);
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return aboutUs;
+	}
+/**
+ * 以对象数组形式返回“关于我们”的记录
+ * @return
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public AboutUs[] read_all() throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		AboutUs[] aboutUss = new AboutUs[count()];
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from aboutUs");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			String name = rs.getString("name");  
+			String address = rs.getString("address");
+			String tel= rs.getString("tel");
+			String synopsis =rs.getString("synopsis");
+
+			aboutUss[i]= new AboutUs(id,name,address,tel,synopsis);
+			
+			i++;
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return aboutUss;
+	}
+	
+	/**
+	 * “关于我们”的记录显示，分页
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<AboutUs> read_all(int currentPage, int pageSize) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		List<AboutUs> emailService = new ArrayList<AboutUs>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from aboutUs limit ?,?");
+		pstmt.setInt(1,(currentPage-1)*pageSize);
+		pstmt.setInt(2,pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){ 
+			int id = rs.getInt("id");
+			String name = rs.getString("name");  
+			String address = rs.getString("address");
+			String tel= rs.getString("tel");
+			String synopsis =rs.getString("synopsis");
+			emailService.add( new AboutUs(id,name,address,tel,synopsis));
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return emailService;
+	}
+	
+	/**
+	 * 以list形式返回所有“关于我们”的记录
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<AboutUs> read_all_1() throws ClassNotFoundException, SQLException {
+	
+		Connection conn = super.getConnection();
+		
+
+
+		List<AboutUs> emailService = new ArrayList<AboutUs>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from aboutUs");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			String name = rs.getString("name");  
+			String address = rs.getString("address");
+			String tel= rs.getString("tel");
+			String synopsis =rs.getString("synopsis");
+
+			emailService.add( new AboutUs(id,name,address,tel,synopsis));
+			
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return emailService;
+	}
+	
+	/**
+	 * 对“关于我们”的记录进行计数
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public int count() throws ClassNotFoundException, SQLException {
+	
+		Connection conn = super.getConnection();
+		int total = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select count(*) from aboutUs");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()){  
+			total = rs.getInt(1);
+			}  
+
+			
+			rs.close(); 
+			
+		super.closeConnection(conn);
+		
+		return total;
+	}
+}

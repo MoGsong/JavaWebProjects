@@ -1,0 +1,108 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+
+public class Unit implements Serializable{
+	private int id;
+	private String name;
+	private String principal;
+	private String tel;
+	private String address;
+	private String yuliu;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPrincipal() {
+		return principal;
+	}
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getYuliu() {
+		return yuliu;
+	}
+	public void setYuliu(String yuliu) {
+		this.yuliu = yuliu;
+	}
+
+	public Unit(String name, String principal, String tel, String address, String yuliu) {
+		super();
+		this.name = name;
+		this.principal = principal;
+		this.tel = tel;
+		this.address = address;
+		this.yuliu = yuliu;
+	}
+	public Unit(int id, String name, String principal, String tel, String address, String yuliu) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.principal = principal;
+		this.tel = tel;
+		this.address = address;
+		this.yuliu = yuliu;
+	}
+	public Unit() {
+		super();
+	}
+	
+	/**
+	 * 无id,无预留构造方法
+	 * @param name
+	 * @param principal
+	 * @param tel
+	 * @param address
+	 */
+	public Unit(String name, String principal, String tel, String address) {
+		super();
+		this.name = name;
+		this.principal = principal;
+		this.tel = tel;
+		this.address = address;
+	}
+	/**
+	 * 有id,无yuliu的构造方法
+	 * @param id
+	 * @param name
+	 * @param principal
+	 * @param tel
+	 * @param address
+	 */
+	public Unit(int id, String name, String principal, String tel, String address) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.principal = principal;
+		this.tel = tel;
+		this.address = address;
+	}
+	@Override
+	public String toString() {
+		return "Unit [id=" + id + ", name=" + name + ", address=" + address + ", principal=" + principal + ", tel="
+				+ tel + ", yuliu=" + yuliu + "]";
+	}
+	
+	
+
+}

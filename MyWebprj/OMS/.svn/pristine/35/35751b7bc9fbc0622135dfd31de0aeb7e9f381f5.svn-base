@@ -1,0 +1,113 @@
+package com.gxnu.action.doctor;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import com.gxnu.entity.Patient;
+import com.gxnu.service.imp.PatientService;
+import com.gxnu.util.Data;
+
+
+
+
+@WebServlet(urlPatterns = {"/patient"})
+@MultipartConfig
+public class patientsAction extends HttpServlet{
+	
+	
+
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+		
+		
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String op = req.getParameter("OP");			
+		   if(op!=null && "exits".equals(op)) {	
+			   
+			//获取页面传递过来的请求参数，即修改的记录id信息
+			String strid = req.getParameter("id");				
+			int id=0;
+			if(strid!=null) {
+				id = Integer.parseInt(strid); 
+			}	
+			
+			//获取页面提交过来的请求参数，即添加的记录信息
+			String Name = req.getParameter("name"); //获取页面的name
+			String Sex = req.getParameter("sex");
+			int Age = Integer.parseInt( req.getParameter("age"));
+			String Password = req.getParameter("password");
+			String Idcard  = req.getParameter("idcard");
+			String Tel = req.getParameter("tel");
+			String Email = req.getParameter("email");
+			//String Pic = req.getParameter("pic");
+			String Yuliu = req.getParameter("yuliu");
+			String username = req.getParameter("username");
+			
+			//获取上传的头像文件				
+			   Part file= req.getPart("pic");
+			   
+			   //通过http协议消息中key  Content-Disposition			 
+			    String info=file.getHeader("Content-Disposition");
+			    //截取文件的后缀
+			    int b=info.indexOf("filename=\"")+10;  //去文件名和忘记属性：如jsp等等
+			    int e=info.length()-1; 
+			    String filename=info.substring(b,e);
+			    System.out.println(filename);
+			
+			  //调用业务方法，修改邮件信息			
+				 PatientService patientService=new PatientService();							
+				 Patient patient=new Patient(id,Name,Sex,Age,username,Password,Idcard,filename,Tel,Email,Yuliu);
+				 patientService.update(patient);
+				
+				
+				//跳转到下个资源，请求转发
+		  		   resp.sendRedirect(Data.URL+"/Patient/Test.html");
+				 
+		 }else if (op != null && "roupdate".equals(op)) {
+			 			 
+			//获取页面传递过来的请求参数，即删除的记录id信息
+				String strid = req.getParameter("id");				
+				int id=0;
+				if(strid!=null) {
+					id = Integer.parseInt(strid); 
+					System.out.println(strid+"..........................");
+					
+					//调用业务方法
+					 PatientService patientService=new PatientService();					 
+					 patientService.remove(id = Integer.parseInt(strid));
+					 
+					 
+					//跳转到下个资源，请求转发http://localhost:8080/OMS/Patient/Login.jsp
+			  		   resp.sendRedirect(Data.URL+"/Patient/Login.jsp");
+			  		   
+				}else if (op != null && "doupdate".equals(op)) {
+					System.out.println("个人信息修改");
+					 String patid= req.getParameter("id");
+			         PatientService ps = new PatientService();
+			         Patient patient = ps.find(Integer.parseInt(patid));
+			         HttpSession session = req.getSession();								
+						session.setAttribute(Data.PATIENT, patient);
+						
+						//跳转到下个资源，请求转发
+				  		   resp.sendRedirect(Data.URL +"/Patient/Patient.jsp");
+				}else {
+					System.out.println("hello");
+				}
+		 }
+	
+}}

@@ -1,0 +1,152 @@
+package com.gxnu.dao;
+
+import com.gxnu.entity.Authorization;
+import com.gxnu.entity.Authorization;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 权限表的CURD操作
+ */
+public class AuthorizationDao extends C3P0BaseDAO {
+    /**
+     * @param authorization 待添加权限{"name"}
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void add(Authorization authorization) throws SQLException, ClassNotFoundException {
+        Connection conn = super.getConnection();//连接数据库
+        PreparedStatement pstmt = conn.prepareStatement("insert into authorization(role,menu,yuliu) values (?,?,?)");//写入sql语句
+        pstmt.setInt(1, authorization.getRole().getId());
+        pstmt.setInt(2, authorization.getMenu().getId());//设置值,1表示第一个问号
+        pstmt.setString(3, authorization.getYuliu());
+        pstmt.executeUpdate();//执行sql语句
+        super.closeConnection(conn);//关闭数据库
+    }
+
+    /**
+     * @param authorization 待删除权限{id}
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void delete(Authorization authorization) throws SQLException, ClassNotFoundException {
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("delete from authorization where id = ? ");
+        pstmt.setInt(1, authorization.getId());
+        pstmt.executeUpdate();
+        super.closeConnection(conn);
+    }
+
+    /**
+     * @param authorization 待修改权限{id,"name"}
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public void update(Authorization authorization) throws SQLException, ClassNotFoundException {
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("update authorization set role = ?,menu = ?,yuliu=? where id = ? ");
+        pstmt.setInt(1, authorization.getRole().getId());
+        pstmt.setInt(2, authorization.getMenu().getId());
+        pstmt.setString(3, authorization.getYuliu());
+        pstmt.setInt(4, authorization.getId());
+        pstmt.executeUpdate();
+        super.closeConnection(conn);
+    }
+
+    /**
+     * 待查询权限
+     *
+     * @param
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public List<Authorization> select() throws SQLException, ClassNotFoundException {
+        List<Authorization> authorizations = new ArrayList<Authorization>(total());
+        int i = 0;
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("select * from authorization");
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            authorizations.add( new Authorization(rs.getInt("id"),
+                    new RoleDao().selectOne(rs.getInt("role")), new MenuDAO().findByPrimaryKey(rs.getInt("menu")),rs.getString("yuliu")));
+        }
+        return authorizations;
+    }
+
+    /**
+     * 查询单个权限
+     *
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public Authorization selectOne(int id) throws ClassNotFoundException, SQLException {
+        Authorization authorization = new Authorization();
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("select * from authorization where id = ?");
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            authorization = new Authorization(rs.getInt("id"),
+                    new RoleDao().selectOne(rs.getInt("role")), new MenuDAO().findByPrimaryKey(rs.getInt("menu")),rs.getString("yuliu"));
+        }
+        return authorization;
+    }
+
+    /**
+     * 查询权限总个数
+     *
+     * @return
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    private int total() throws SQLException, ClassNotFoundException {
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("select count(*) from authorization");
+        ResultSet rs = pstmt.executeQuery();
+        int total = 0;
+        ResultSet count = pstmt.executeQuery();
+
+        if (count.next()) {
+            total = count.getInt("count(*)");
+        }
+        return total;
+    }
+
+    public List<Authorization> select(int roleId) throws SQLException, ClassNotFoundException {
+        List<Authorization> authorizations = new ArrayList<Authorization>();
+        int i = 0;
+        Connection conn = super.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("select * from authorization where role = ?");
+        pstmt.setInt(1, roleId);
+        ResultSet rs = pstmt.executeQuery();
+        System.out.println(roleId);
+        while (rs.next()) {
+            authorizations.add(new Authorization(rs.getInt("id"),
+                    new RoleDao().selectOne(rs.getInt("role")), new MenuDAO().findByPrimaryKey(rs.getInt("menu")),rs.getString("yuliu")));
+        }
+        return authorizations;
+    }
+
+//    private int total(int roleId) throws SQLException, ClassNotFoundException {
+//        Connection conn = super.getConnection();
+//        PreparedStatement pstmt = conn.prepareStatement("select count(*) from authorization where role = ?");
+//        pstmt.setInt(1, roleId);
+//        ResultSet rs = pstmt.executeQuery();
+//        int total = 0;
+//        ResultSet count = pstmt.executeQuery();
+//
+//        if (count.next()) {
+//            total = count.getInt("count(*)");
+//        }
+//        return total;
+//
+//    }
+}
+

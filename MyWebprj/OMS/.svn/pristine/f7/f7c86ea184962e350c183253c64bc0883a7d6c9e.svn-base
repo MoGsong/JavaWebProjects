@@ -1,0 +1,172 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<%@page import="java.util.List"%>    
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.gxnu.util.Data"%>
+<%@page import="com.gxnu.entity.Schedule"%>
+<%@page import="com.gxnu.service.imp.ScheduleService"%>
+<%@page import="com.gxnu.service.IScheduleService"%>
+<%@page import="com.gxnu.entity.Unit"%>
+<%@page import="com.gxnu.service.imp.UnitService"%>
+<%@page import="com.gxnu.service.IUnitService"%>
+<%@page import="com.gxnu.entity.Doctor"%>
+<%@page import="com.gxnu.service.imp.DoctorService"%>
+<%@page import="com.gxnu.service.IDoctorService"%>
+<%@page import="com.gxnu.entity.Unit"%>
+<%@page import="com.gxnu.service.imp.UnitService"%>
+<%@page import="com.gxnu.service.IUnitService"%>
+<%
+		Object obj = session.getAttribute(Data.DOCTOR);
+		if (obj != null) {
+			doctor = (int) obj;
+		}
+		int selectedDoctorId = doctor.getId();
+		
+		
+		  IScheduleService iis = new ScheduleService();
+		  List<Schedule> schedules1 = new ArrayList<Schedule>();
+
+		  List<Schedule> schedules2 = new ArrayList<Schedule>();
+%>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>值班管理 </title>
+    <!-- plugin css file  -->
+    <link rel="stylesheet" href="<%=Data.URL%>/Manage/static/css/main.min.css">
+    <!-- project css file  -->
+    <link rel="stylesheet" href="<%=Data.URL%>/Manage/static/css/ihealth.style.min.css">
+
+
+</head>
+<body>
+
+<div id="ihealth-layout" class="theme-tradewind">
+    <!-- main body area -->
+    <div class="main px-lg-4 px-md-4">
+
+        <!-- Body: Body -->
+        <div class="body d-flex py-lg-3 py-md-2">
+            <div class="container-xxl">
+                <div class="row align-items-center">
+                    <div class="border-0 mb-4">
+                        <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom">
+                            <h3 class="fw-bold mb-0">值班查看</h3>    
+                        </div>
+                    </div>
+                </div> <!-- Row end  -->
+                
+
+
+                <!-- Start Doctor Calendar Area -->
+        <section class="doctor-calendar-area section" >
+            <div class="container">
+                <div class="row">
+					<div class="col-lg-12">
+						<div class="section-title">
+							<h2>我的值班表</h2>
+						</div>
+					</div>
+				</div>
+                <div class="row">
+					<div class="col-12">
+						<div class="doctor-calendar-table table-responsive">
+							<table class="table">
+								<thead>
+									<tr style="background-color: #6AAB9C;">
+										<th>Time</th>
+										<th>Monday</th>
+										<th>Tuesday</th>
+										<th>Wednesday</th>
+										<th>Thursday</th>
+										<th>Friday</th>
+										<th>Saturday</th>
+										<th>Sunday</th>
+									</tr>
+								</thead>
+
+
+								
+  					<form  id="updateForm" method="post" >
+								<tbody style="padding: 12px;">
+									<tr>
+										<td><span class="time">上午9:00-12:00</span></td>
+									<%
+											
+											//循环遍历集合，每循环一次，生成一行html<tr></tr>，在每一个单元格中 <td></td>,把静态数据改成数据库表中的记录
+											
+													for (int i=1;i<=7;i++){
+														%>
+														<td>
+														<% 
+														schedules1 = iis.findByWeekByPeriodByDoctorId(i, "上午",selectedDoctorId);
+														for(Schedule schedule1:schedules1){
+														%>
+														<div style="margin-bottom:5px;">
+															<h4>work</h4>
+						                           		</div>		
+							                           													
+														<% } %>
+
+													</td>
+												<% } %>
+										</tr>				
+
+									<tr>
+										<td><span class="time">下午15:00-17:00</span></td>
+									<%
+											
+											//循环遍历集合，每循环一次，生成一行html<tr></tr>，在每一个单元格中 <td></td>,把静态数据改成数据库表中的记录
+											
+													for (int i=1;i<=7;i++){
+														%>
+														<td>
+														<% 
+														schedules2 = iis.findByWeekByPeriodByDoctorId(i, "下午",selectedDoctorId);
+														for(Schedule schedule2:schedules2){
+															%>
+															<div style="margin-bottom:5px;">
+																<h4>work</h4>
+							                           		</div>		
+							                           													
+														<% } %>
+
+													</td>
+												<% } %>
+										</tr>
+								</tbody>
+								</form>
+								</table>
+							</table>
+						</div>
+					</div>
+                </div>
+            </div>
+        </section>
+        <!-- End Doctor Calendar Area -->
+
+
+            </div>
+        </div>
+
+
+
+  
+<!-- Jquery Core Js -->
+<script src="<%=Data.URL%>/Manage/static/js/libscripts.bundle.js"></script>
+
+<!-- Plugin Js-->
+<script src="<%=Data.URL%>/Manage/static/js/main.min.js"></script>
+
+<!-- Jquery Page Js -->
+<script src="<%=Data.URL%>/Manage/static/js/template.js"></script>
+
+
+
+</body>
+</html>

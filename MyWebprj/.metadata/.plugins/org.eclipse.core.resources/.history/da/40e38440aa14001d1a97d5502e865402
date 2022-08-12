@@ -1,0 +1,11 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+
+public class Dialogue implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	
+
+}

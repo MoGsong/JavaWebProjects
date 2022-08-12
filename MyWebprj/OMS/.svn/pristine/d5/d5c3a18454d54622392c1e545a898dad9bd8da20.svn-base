@@ -1,0 +1,33 @@
+.header-profile-user{
+	height: 54px;
+    width: 54px;
+    background-color: #2073c4;
+    padding: 2px;
+    border-radius: 50%!important;
+}
+.date_color1 {
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    background: #1043E8;
+    color: #fff;
+    padding: 4px 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.date_color2 {
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    background: #1510DE;
+    color: #fff;
+    padding: 4px 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.cassinfo_shwo{
+	font-size: 18px;
+	font-weight: bold;
+	line-height:40px;
+	color:black;
+}

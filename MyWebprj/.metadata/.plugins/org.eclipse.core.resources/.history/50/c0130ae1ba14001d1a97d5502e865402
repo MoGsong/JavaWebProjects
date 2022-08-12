@@ -1,0 +1,18 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.Dialogue;
+
+
+public interface IUserService {
+	public void add(Dialogue dialogue);
+	//对话删除
+	public void remove(int id);
+	//对话修改
+	public void update(Dialogue dialogue);
+	//单个对话查询
+	public Dialogue findById(int id);
+	//查询对话
+	public List<Dialogue> find();
+}

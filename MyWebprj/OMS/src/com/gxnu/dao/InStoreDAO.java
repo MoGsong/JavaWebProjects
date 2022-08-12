@@ -1,0 +1,194 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import com.gxnu.entity.InStore;
+import com.gxnu.entity.Operator;
+
+
+
+/**
+ * 入库信息持久层
+ * @author ymp0519
+ *
+ */
+
+
+public class InStoreDAO  extends C3P0BaseDAO{
+
+/**
+ * 入库信息的添加
+ * @param operator
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void add(InStore operator) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+
+		PreparedStatement pstmt = 
+				conn.prepareStatement("insert into in_store (operator,time,yuliu) values(?,?,?)");
+
+		pstmt.setInt(1,operator.getOperator().getId());
+		pstmt.setTimestamp(2,operator.getTime());
+        pstmt.setString(3, operator.getYuliu());
+		pstmt.executeUpdate();
+	
+		super.closeConnection(conn);
+	}
+
+/**
+ * 入库信息的修改
+ * @param operator
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void merge(InStore operator) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = 
+				conn.prepareStatement("update in_store set operator=?,time=?,yuliu=? where id=?");
+		
+		pstmt.setInt(1,operator.getOperator().getId());
+		pstmt.setTimestamp(2,operator.getTime());
+		pstmt.setString(3, operator.getYuliu());
+		pstmt.setInt(4,operator.getId());//id
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+/**
+ * 入库信息的修改
+ * @param operator
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void delete(InStore operator) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("delete from in_store where id=?");
+		pstmt.setInt(1, operator.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	/**
+	 * 通过id查找入库
+	 * @param id
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public InStore findById(int id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		InStore inStore  = new InStore();
+		PreparedStatement pstmt = conn.prepareStatement("select * from in_store where id = ?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()){ 
+			int operator_id = rs.getInt("operator");  
+			Timestamp time = rs.getTimestamp("time");
+			String yuliu= rs.getString("yuliu");
+			
+			OperatorDAO operatorDAO = new OperatorDAO();
+			Operator operator = operatorDAO.findByPrimaryKey(operator_id);
+
+			inStore= new InStore(id,operator,time,yuliu);
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return inStore;
+	}
+
+	/**
+	 * 查询所有入库信息
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<InStore> findAll() throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+		List<InStore> inStores = new ArrayList<InStore>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from in_store");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			int operator_id = rs.getInt("operator");  
+			Timestamp time = rs.getTimestamp("time");
+			String yuliu= rs.getString("yuliu");
+			
+			OperatorDAO operatorDAO = new OperatorDAO();
+			Operator operator = operatorDAO.findByPrimaryKey(operator_id);
+			
+			inStores.add( new InStore(id,operator,time,yuliu));
+			
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return inStores;
+	}
+	
+	
+/**
+ * 分页
+ * @param currentPage
+ * @param pageSize
+ * @return
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public List<InStore> findAll(int currentPage, int pageSize) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		List<InStore> inStores = new ArrayList<InStore>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from in_store limit ?,?");
+		pstmt.setInt(1,(currentPage-1)*pageSize);
+		pstmt.setInt(2,pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			int operator_id = rs.getInt("operator");  
+			Timestamp time = rs.getTimestamp("time");
+			String yuliu= rs.getString("yuliu");
+			
+			OperatorDAO operatorDAO = new OperatorDAO();
+			Operator operator = operatorDAO.findByPrimaryKey(operator_id);
+			
+			inStores.add( new InStore(id,operator,time,yuliu));
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return inStores;
+	}
+	
+	
+}

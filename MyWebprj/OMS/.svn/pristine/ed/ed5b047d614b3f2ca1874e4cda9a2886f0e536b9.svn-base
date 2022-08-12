@@ -1,0 +1,98 @@
+package com.gxnu.service.imp;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.dao.ReserveCaseDAO;
+import com.gxnu.entity.ReserveCase;
+import com.gxnu.service.IReserveCaseService;
+
+public class ReserveCaseService implements IReserveCaseService {
+
+	//添加记录
+	@Override
+	public void add(ReserveCase reservecase) {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		try {
+			reservecaseDAO.add(reservecase);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	//删除某条记录
+	@Override
+	public void remove(int id) {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		ReserveCase reservecase = new ReserveCase();
+		reservecase.setId(id);
+		try {
+			reservecaseDAO.delete(reservecase);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//根据id更新某一条记录
+	@Override
+	public void update(ReserveCase reservecase) {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		try {
+			reservecaseDAO.merger(reservecase);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//查询所有记录
+	@Override
+	public List<ReserveCase> findAll() {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		List<ReserveCase> reservecases = new ArrayList<ReserveCase>();
+		try {
+			reservecases = reservecaseDAO.findAll();
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return reservecases;
+	}
+
+	//根据id查询某一条记录
+	@Override
+	public ReserveCase findById(int id) {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		ReserveCase reservecase = new ReserveCase();
+		try {
+			reservecase = reservecaseDAO.findById(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return reservecase;
+	}
+
+	@Override
+	public List<ReserveCase> findByDoctorId(int doctorid) {
+		// 创建持久层对象
+		ReserveCaseDAO reservecaseDAO = new ReserveCaseDAO();
+		List<ReserveCase> reserveCaseFind = new ReserveCaseService().findAll();
+		List<ReserveCase> reserveCases = new ArrayList<>();
+		try {
+			for (ReserveCase reserveCase : reserveCaseFind) {
+				if(reserveCase.getDoctor().getId() == doctorid) {
+					reserveCases.add(reservecaseDAO.findById(reserveCase.getId()));
+				}
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return reserveCases;
+	}
+
+}

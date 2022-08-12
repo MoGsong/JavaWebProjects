@@ -1,0 +1,89 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+/**
+ * 
+ * @author 胖子不露小酒窝
+ *菜单类
+ */
+public class Feedback implements Serializable{
+	//属性：编号、内容、时间、预留
+	private int id;
+	private String content;
+	private Timestamp time;
+	private String yuliu;
+	
+	/**
+	 * set|get方法
+	 * @return
+	 */
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
+	public Timestamp getTime() {
+		return time;
+	}
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
+	
+	public String getYuliu() {
+		return yuliu;
+	}
+	public void setYuliu(String yuliu) {
+		this.yuliu = yuliu;
+	}
+	
+	/**
+	 * 构造方法
+	 * @param id
+	 * @param content
+	 * @param time
+	 * @param URL
+	 */
+	public Feedback(int id, String content, Timestamp time, String yuliu) {
+		super();
+		this.id=id;
+		this.content = content;
+		this.time = time;
+		this.yuliu = yuliu;
+	}
+	
+	public Feedback(String content, Timestamp time,String yuliu) {
+		super();
+		this.content = content;
+		this.time = time;
+		this.yuliu = yuliu;
+	}
+	
+	public Feedback(String content) {
+		super();
+		this.content = content;
+	}
+	//构造空方法
+	public Feedback() {
+		super();
+	}
+	
+	/**
+	 * toString方法
+	 */
+	@Override
+	public String toString() {
+		return "Menu [id=" + id + ", content=" + content + ", time=" + time + ", yuliu=" + yuliu + "]";
+	}
+	
+}

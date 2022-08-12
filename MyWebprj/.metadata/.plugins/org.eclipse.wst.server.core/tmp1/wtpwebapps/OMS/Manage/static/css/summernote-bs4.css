@@ -1,0 +1,136 @@
+@font-face {
+    font-family: "summernote";
+    font-style: normal;
+    font-weight: normal;
+    src: url("../font/summernote.eot");
+    src: url("../font/summernote.eot") format("embedded-opentype"), url("../font/summernote.woff") format("woff"), url("../font/summernote.ttf") format("truetype")
+}
+
+[class^="note-icon-"]:before,
+[class*=" note-icon-"]:before {
+    display: inline-block;
+    font: normal normal normal 14px summernote;
+    font-size: inherit;
+    -webkit-font-smoothing: antialiased;
+    text-decoration: inherit;
+    text-rendering: auto;
+    text-transform: none;
+    vertical-align: middle;
+    speak: none;
+    -moz-osx-font-smoothing: grayscale
+}
+
+
+.note-icon-video:before {
+    display: inline-block;
+    font-family: "summernote";
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit
+}
+
+
+
+.note-editor {
+    position: relative
+}
+
+.note-editor .note-dropzone {
+    position: absolute;
+    z-index: 100;
+    display: none;
+    color: #87cefa;
+    background-color: #fff;
+    opacity: .95
+}
+
+.note-editor .note-dropzone .note-dropzone-message {
+    display: table-cell;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle
+}
+
+.note-editor .note-dropzone.hover {
+    color: #098ddf
+}
+
+.note-editor.dragover .note-dropzone {
+    display: table
+}
+
+.note-editor .note-editing-area {
+    position: relative
+}
+
+.note-editor .note-editing-area .note-editable {
+    outline: 0
+}
+
+.note-editor .note-editing-area .note-editable sup {
+    vertical-align: super
+}
+
+.note-editor .note-editing-area .note-editable sub {
+    vertical-align: sub
+}
+
+.note-editor .note-editing-area img.note-float-left {
+    margin-right: 10px
+}
+
+.note-editor .note-editing-area img.note-float-right {
+    margin-left: 10px
+}
+
+.note-editor.note-frame {
+    border: 1px solid #0e0d0d
+}
+
+.note-editor.note-frame.codeview .note-editing-area .note-editable {
+    display: none
+}
+
+.note-editor.note-frame.codeview .note-editing-area .note-codable {
+    display: block
+}
+
+.note-editor.note-frame .note-editing-area {
+    overflow: hidden
+}
+
+.note-editor.note-frame .note-editing-area .note-editable {
+    padding: 10px;
+    overflow: auto;
+    color: #000;
+    word-wrap: break-word;
+    background-color: #fff
+}
+
+.note-editor.note-frame .note-editing-area .note-editable[contenteditable="false"] {
+    background-color: #e5e5e5
+}
+
+.note-editor.note-frame .note-editing-area .note-codable {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 0;
+    font-family: Menlo, Monaco, monospace, sans-serif;
+    font-size: 14px;
+    color: rgb(7, 7, 7);
+    background-color: #222;
+    border: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    outline: 0;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none
+}
+

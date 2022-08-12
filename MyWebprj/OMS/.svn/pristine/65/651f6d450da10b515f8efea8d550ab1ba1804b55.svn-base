@@ -1,0 +1,74 @@
+package com.gxnu.entity;
+
+public class OutDetail {
+	private int id;
+    private Inventory inventory;
+    private OutDetail outDetail;
+    private int num;
+    private String tusage;
+    private String yuliu;
+	public OutDetail(int id, Inventory inventory, OutDetail outDetail, int num, String tusage, String yuliu) {
+		super();
+		this.id = id;
+		this.inventory = inventory;
+		this.outDetail = outDetail;
+		this.num = num;
+		this.tusage = tusage;
+		this.yuliu = yuliu;
+	}
+	public OutDetail(Inventory inventory, OutDetail outDetail, int num, String tusage, String yuliu) {
+		super();
+		this.inventory = inventory;
+		this.outDetail = outDetail;
+		this.num = num;
+		this.tusage = tusage;
+		this.yuliu = yuliu;
+	}
+	public OutDetail() {
+		super();
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Inventory getInventory() {
+		return inventory;
+	}
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+	public OutDetail getOutDetail() {
+		return outDetail;
+	}
+	public void setOutDetail(OutDetail outDetail) {
+		this.outDetail = outDetail;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public String getTusage() {
+		return tusage;
+	}
+	public void setTusage(String tusage) {
+		this.tusage = tusage;
+	}
+	public String getYuliu() {
+		return yuliu;
+	}
+	public void setYuliu(String yuliu) {
+		this.yuliu = yuliu;
+	}
+	@Override
+	public String toString() {
+		return "OutDetail [id=" + id + ", inventory=" + inventory + ", outDetail=" + outDetail + ", num=" + num
+				+ ", tusage=" + tusage + ", yuliu=" + yuliu + "]";
+	}
+    
+    
+
+}

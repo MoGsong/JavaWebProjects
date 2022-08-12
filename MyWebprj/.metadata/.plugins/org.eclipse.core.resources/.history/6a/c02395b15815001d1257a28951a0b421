@@ -1,0 +1,17 @@
+package com.gxnu.test;
+
+import com.gxnu.entity.Menu;
+import com.gxnu.service.IMenuService;
+import com.gxnu.service.IOperatorService;
+import com.gxnu.service.imp.MenuService;
+import com.gxnu.service.imp.OperatorService;
+
+public class Test {
+
+	public static void main(String[] args) {
+		IMenuService ims = new MenuService();
+		IOperatorService ios = new OperatorService();
+		Menu menu = new Menu("个人信息修改",0,"","");
+	}
+
+}

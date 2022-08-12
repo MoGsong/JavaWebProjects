@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="true"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<item key="selection" value=""/>
+		<list key="findhistory">
+			<item value="widnow"/>
+			<item value="disconn"/>
+			<item value="record"/>
+			<item value="tbuserList"/>
+			<item value="loginName"/>
+			<item value="Rss"/>
+			<item value="记录"/>
+			<item value="显示"/>
+			<item value="myProjectTable_length"/>
+			<item value="menus"/>
+			<item value="/Manage"/>
+			<item value="notice"/>
+			<item value="effect"/>
+			<item value="element"/>
+			<item value="Menu1"/>
+		</list>
+		<list key="replacehistory">
+			<item value=""/>
+			<item value="yuliu"/>
+			<item value="url"/>
+			<item value="parent"/>
+			<item value="menu"/>
+			<item value="Menu1"/>
+			<item value="Data.URL"/>
+			<item value="Menu"/>
+			<item value="UTF-8"/>
+			<item value="gxnu"/>
+			<item value="对话hua"/>
+			<item value="Dialogue"/>
+			<item value="dialogue"/>
+			<item value="消息记录"/>
+			<item value="log"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1147"/>
+		<item key="DIALOG_Y_ORIGIN" value="202"/>
+		<item key="DIALOG_WIDTH" value="356"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI"/>
+	</section>
+</section>

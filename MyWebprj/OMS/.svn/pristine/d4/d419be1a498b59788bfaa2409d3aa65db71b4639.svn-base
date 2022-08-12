@@ -1,0 +1,25 @@
+package com.gxnu.service;
+import java.util.List;
+
+import com.gxnu.entity.Doctor;
+/**
+ * 	权限操作对应的业务接口
+ * @author johny
+ *  业务接口
+ */
+public interface IDoctorService {
+	//添加权限
+	public void add(Doctor doctor);
+	//删除权限
+	public void remove(int id);
+	//修改权限
+	public void update(Doctor doctor);
+	
+	//查询单个权限
+	public Doctor find(int id);
+	//查询所有权限
+	public List<Doctor> find();
+	
+	//根据角色，查询权限
+	public List<Doctor> findByRole(int roleid);
+}

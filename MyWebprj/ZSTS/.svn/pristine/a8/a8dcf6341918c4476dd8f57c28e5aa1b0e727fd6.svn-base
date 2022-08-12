@@ -1,0 +1,113 @@
+<%@page import="com.gxnu.entity.Menu"%>
+<%@page import="com.gxnu.service.imp.MenuService"%>
+<%@page import="com.gxnu.service.IMenuService"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.gxnu.entity.Authorization"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	Object obj = request.getAttribute("AUTHORIZATIONS");
+	List<Authorization> authorizations = new ArrayList<Authorization>();
+	if (obj != null) {
+		authorizations = (List<Authorization>) obj;
+	}
+%>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Step2</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+
+<link href="http://localhost:8080/ZSTS/web/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+<link href="http://localhost:8080/ZSTS/web/css/custom.css" rel="stylesheet">
+<link href="http://localhost:8080/ZSTS/web/css/style.css?v=2.2.0" rel="stylesheet">
+
+<style type="text/css">
+body {
+	background-color: white
+}
+</style>
+</head>
+<body>
+	<form action="http://localhost:8080/ZSTS/authorization?OP=doupdate"
+		method="post" class="form-horizontal">
+
+		<div style="margin: 0px auto">
+			<label class="col-sm-2 control-label" style="height: 200px">权限选择 </label>
+			
+			<%
+				//调用业务方法，查询父菜单
+				IMenuService ims = new MenuService();
+
+				List<Menu> fathers = ims.findByParent(0);
+
+				for (int i = 0; i < fathers.size(); i++) {
+			%>
+			<input name="menus" value="<%=fathers.get(i).getId()%>"
+				type="checkbox"
+				<%for (Authorization aux : authorizations) {
+					if (aux.getMenu().getId() == fathers.get(i).getId()) {
+						out.print("checked='checked'");
+						break;
+					}
+				}%> />&nbsp;<%=fathers.get(i).getName()%><br />
+
+			<%
+				List<Menu> sons = ims.findByParent(fathers.get(i).getId());
+					for (Menu son : sons) {
+			%>
+			&nbsp;&nbsp;&nbsp;&nbsp; <input name="menus" value="<%=son.getId()%>"
+				type="checkbox"
+				<%for (Authorization aux : authorizations) {
+						if (aux.getMenu().getId() == son.getId()) {
+							out.print("checked='checked'");
+							break;
+						}
+					}%> />&nbsp;<%=son.getName()%><br />
+			<%
+				}
+			%>
+			<%
+				}
+			%>
+
+		</div>
+		<!-- 横线 -->
+		<div class="hr-line-dashed"></div>
+		<div style="margin-left: 170px">
+			<div style="margin-left: 0px">
+				<div class="col-sm-8">
+					<input type="hidden" name="roleid"
+						value="<%=request.getParameter("roleid")%>" /> <input
+						type="submit" class="btn btn-primary" value="确定" />
+				</div>
+			</div>
+		</div>
+
+	</form>
+
+
+
+
+	<!-- Mainly scripts -->
+	<script src="http://localhost:8080/ZSTS/web/js/jquery-2.1.1.min.js"></script>
+
+
+
+	<!-- iCheck -->
+	<script src="http://localhost:8080/ZSTS/web/js/plugins/iCheck/icheck.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.i-checks').iCheck({
+				checkboxClass : 'icheckbox_square-green',
+				radioClass : 'iradio_square-green',
+			});
+		});
+	</script>
+
+</body>
+</html>

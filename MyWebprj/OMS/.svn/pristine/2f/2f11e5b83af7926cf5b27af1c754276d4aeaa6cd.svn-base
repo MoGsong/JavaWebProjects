@@ -1,0 +1,125 @@
+<%@page import="com.gxnu.util.Data"%>
+<%@page import="com.gxnu.entity.Doctor"%>
+<%@page import="java.util.List"%>
+<%@page import="com.gxnu.service.imp.DoctorService"%>
+<%@page import="com.gxnu.service.IDoctorService"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="UTF-8"%>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>:: 医生信息管理:: 所有医生</title>
+<!-- plugin css file  -->
+<link rel="stylesheet" href="static/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="static/css/dataTables.bootstrap5.min.css">
+<!-- project css file  -->
+<link rel="stylesheet" href="static/css/ihealth.style.min.css">
+</head>
+<body>
+
+	<div id="ihealth-layout" class="theme-tradewind">
+		<div class="main px-lg-4 px-md-4">
+			<!-- Body: Header -->
+			<div class="header">
+				<nav class="navbar py-4">
+					<div class="container-xxl"></div>
+			</div>
+
+
+
+
+			</nav>
+
+			<!-- Body: Body -->
+			<div class="body d-flex py-3">
+				<div class="container-xxl">
+					<div class="row align-items-center">
+						<div class="border-0 mb-4">
+							<div
+								class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+								<h3 class="fw-bold mb-0">医生信息管理</h3>
+								<div class="ibox-content">
+									<div class="col-auto d-flex w-sm-100">
+										<button type="button"
+											class="btn btn-primary btn-set-task w-sm-100">
+											<i class="icofont-plus-circle me-2 fs-6"></i><a
+												href="AddDoctor.jsp">添加医生</a>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Row end  -->
+						<div
+							class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-4 row-deck py-1 pb-4">
+							<%
+								IDoctorService doctorService = new DoctorService();
+								List<Doctor> doctors = doctorService.find();
+								for (Doctor doctor : doctors) {
+							%>
+							<div class="col">
+								<div class="card teacher-card ">
+									<div class="card-body d-flex flex-column">
+
+										<div class="profile-av mx-auto text-center w220">
+											<img src="<%=Data.URL%>/<%=doctor.getPic()%>" alt=""
+												class="avatar xl rounded-circle img-thumbnail shadow-sm">
+										</div>
+
+
+										<div class="teacher-info  w-100 text-center mt-3">
+											<h6 class="mb-2 mt-2  fw-bold d-block fs-6"><%=doctor.getName()%></h6>
+											<span
+												class="light-info-bg py-2 px-2 rounded-1 d-inline-block fw-bold small-11 mb-0 mt-1"><%=doctor.getUnit().getName()%></span>
+											<a href="doctor-profile.html" class="btn btn-primary btn-sm">更多</a></br>
+											</br>
+											<div class="btn-group" role="group"
+												aria-label="Basic outlined example">
+												<button type="button" class="btn btn-outline-secondary">
+													<a href="<%=Data.URL%>/doctor?OP=toupdate&id=<%=doctor.getId()%>"><i class="icofont-edit text-success"></i></a>
+												</button>
+												<button type="button"
+													class="btn btn-outline-secondary ">
+													<a href="<%=Data.URL%>/doctor?id=<%=doctor.getId()%>"><i class="icofont-ui-delete text-danger"></i></a>
+												</button>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+							<%
+								}
+							%>
+
+
+						</div>
+					</div>
+				</div>
+
+				<!-- Jquery Core Js -->
+				<script src="static/js/libscripts.bundle.js"></script>
+
+				<!-- Plugin Js-->
+				<script src="static/js/dataTables.bundle.js"></script>
+
+				<!-- Jquery Page Js -->
+				<script src="static/js/template.js"></script>
+				<script>
+					$(document).ready(function() {
+						$('#patient-table').addClass('nowrap').dataTable({
+							responsive : true,
+							columnDefs : [ {
+								targets : [ -1, -3 ],
+								className : 'dt-body-right'
+							} ]
+						});
+					});
+				</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.dao.C3P0BaseDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Image;
+import com.gxnu.entity.Patient;
+import com.gxnu.service.IDoctorService;
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.PatientService;;
+
+/**
+ * 图片管理表的CURD
+ * @author 
+ *
+ */
+public class ImageDAO extends C3P0BaseDAO{
+	//添加图片
+	public void add(Image image) throws ClassNotFoundException, SQLException {
+		Connection conn =super.getConnection();
+		PreparedStatement pstmt =conn.prepareStatement("insert into image (name,url,yuliu) values(?,?,?)");
+		//设置占位符的值
+		pstmt.setString(1, image.getName());
+		pstmt.setString(2, image.getUrl());
+		pstmt.setString(3, image.getYuliu());
+		//执行sql语句，同步到mysql表  (这个代码很关键）
+		pstmt.executeUpdate();
+		//4.关闭数据库连接
+		super.closeConnection(conn);
+		
+	}
+	
+	
+	//修改图片
+	public void merge(Image image) throws ClassNotFoundException, SQLException {
+		Connection conn =super.getConnection();
+		PreparedStatement pstmt =conn.prepareStatement("update image set name=?,url=?,yuliu=? where id=?");
+		pstmt.setString(1, image.getName());
+		pstmt.setString(2, image.getUrl());
+		pstmt.setString(3, image.getYuliu());
+		pstmt.setInt(4, image.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	//删除图片
+	public void delete (Image image) throws ClassNotFoundException, SQLException {
+		//加载驱动，连接数据库oms
+		Connection conn =super.getConnection();
+		//获取数据库操作对象pstmt,并绑定mysql语句
+		PreparedStatement pstmt =conn.prepareStatement("delete from image where id=?");
+		//设置占位符的值
+		pstmt.setInt(1,image.getId());
+		//执行sql语句，同步到mysql表
+		pstmt.executeUpdate();
+		//关闭数据库连接
+		super.closeConnection(conn);
+	}
+	
+	
+	
+	//查询所有图片
+	public List<Image> findAll() throws ClassNotFoundException, SQLException {
+		 List<Image> images =new ArrayList<Image>();
+		Connection conn =super.getConnection();
+		PreparedStatement pstmt =conn.prepareStatement("select * from image");
+		//4.根据数据库操作对象获取结果集对象,结果集对象存放了所有查询的结果
+		ResultSet rs = pstmt.executeQuery();
+		//通过next()方法让结果集中的指针向下移动一行，当移动到结果集末尾时，返回到false,否则返回true
+		while(rs.next()) {
+			int imageid = rs.getInt("id");//其中id为结果集字段名称
+		    String name= rs.getString("name");//症状
+		    String url= rs.getString("url");
+		    String yuliu= rs.getString("yuliu");
+			//把指针当前定位的记录信息存放到图片实体对象中
+			Image image = new Image (imageid,name,url,yuliu);
+			//把实体对象存放到数组
+			images.add(image);
+		}
+		//关闭数据库连接
+		super.closeConnection(conn);
+		return images;
+	}
+	
+	//查询图片表中的所有记录总条数
+	private int findTotal() throws ClassNotFoundException, SQLException {
+		int total =0;
+		Connection conn =super.getConnection();
+		PreparedStatement pstmt =conn.prepareStatement("select count(*)from image");
+		ResultSet rs = pstmt.executeQuery();
+		//因为结果集只有一条记录，无需循环
+		if(rs.next()) {
+			rs.getInt(1);//此处使用字段对应的序号，作用同rs.get.Int("count(*)"
+		}
+		return total;
+	}
+	
+	//根据主键查单个图片
+	public Image findById(int id) throws ClassNotFoundException, SQLException {
+		Image image = new Image();
+		Connection conn =super.getConnection();
+		PreparedStatement pstmt =conn.prepareStatement("select * from image where id =?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()) {
+			int imageid = rs.getInt("id");//其中id为结果集字段名称
+		    String name= rs.getString("name");//症状
+		    String url= rs.getString("url");
+		    String yuliu= rs.getString("yuliu");
+			//把指针当前定位的记录信息存放到图片实体对象中
+			image = new Image (imageid,name,url,yuliu);
+			//把实体对象存放到数组
+	}
+		super.closeConnection(conn);
+		return image;
+	}	
+	
+	//查询图片表中的所有记录总条数
+		private int findTotal(int parent) throws ClassNotFoundException, SQLException {
+			int total =0;
+			Connection conn =super.getConnection();
+			PreparedStatement pstmt =conn.prepareStatement("select count(*)from image where parent = ?");
+			pstmt.setInt(1, parent);
+			ResultSet rs = pstmt.executeQuery();
+			//因为结果集只有一条记录，无需循环
+			if(rs.next()) {
+				rs.getInt(1);//此处使用字段对应的序号，作用同rs.get.Int("count(*)"
+			}
+			return total;
+		}
+}

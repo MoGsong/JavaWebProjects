@@ -1,0 +1,98 @@
+package com.gxnu.test;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import com.gxnu.dao.DoctorDAO;
+import com.gxnu.dao.PatientDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Inventory;
+import com.gxnu.entity.OutDetail;
+import com.gxnu.entity.OutStore;
+import com.gxnu.entity.Patient;
+import com.gxnu.entity.Recipe;
+import com.gxnu.entity.Registration;
+import com.gxnu.service.IRecipeService;
+import com.gxnu.service.imp.InventoryService;
+import com.gxnu.service.imp.OutDetailService;
+import com.gxnu.service.imp.OutStoreService;
+import com.gxnu.service.imp.RecipeService;
+import com.gxnu.service.imp.RegistrationService;
+
+public class RegistrationTest {
+	public static void main(String[] args) {
+		/*
+		 * Doctor doc = new DoctorDAO().findByPrimaryKey(4); Patient pat = new
+		 * PatientDAO().findByPrimaryKey(1); Registration registration = new
+		 * Registration(doc,pat,Timestamp.valueOf("2022-08-06 18:53:22"),Timestamp.
+		 * valueOf("2022-08-06 15:43:22"),"123",null); RegistrationService
+		 * registrationService = new RegistrationService();
+		 * System.out.println("这是第一条数据，id为空"+ registration.toString());
+		 * registrationService.add(registration); Registration registration2 =
+		 * registrationService.find(3); System.out.println("这是写入数据库后读出的数据"+
+		 * registration2.toString()); Registration registration3 = new
+		 * Registration(doc,pat,Timestamp.valueOf("2022-08-06 05:05:05"),Timestamp.
+		 * valueOf("2022-08-06 15:43:22"),"123",null);
+		 * registrationService.update(registration3); Registration registration4 =
+		 * registrationService.find(3); System.out.println("这是修改数据库数据后读出的数据"+
+		 * registration4.toString()); registrationService.remove(5);
+		 */
+		
+		/*
+		 * Date d = new Date(); long n = d.getTime(); Date m = new Date(122,7,06,15,50);
+		 * long mt = m.getTime(); SimpleDateFormat ft = new SimpleDateFormat
+		 * ("yyyy-MM-dd hh:mm:ss"); System.out.println("当前时间："+ft.format(d)+"---" +
+		 * "另外一个时间是："+ft.format(m)); System.out.println((n-mt)/86400000);
+		 */
+		
+		/*
+		 * String time = "09:00:00"; Date d = new Date(); SimpleDateFormat ft = new
+		 * SimpleDateFormat("yyyy-MM-dd"); SimpleDateFormat ft1 = new
+		 * SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); String time1 = ft.format(d);
+		 * Timestamp reserveTime = new Timestamp(0); try { reserveTime = new
+		 * Timestamp(ft1.parse(time1 + " " + time).getTime()); } catch (ParseException
+		 * e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 * System.out.println(reserveTime);
+		 */
+		
+/*		Date vNow = new Date();
+		String sNow = "";
+		sNow += String.valueOf(vNow.getYear());
+		sNow += String.valueOf(vNow.getMonth() + 1);
+		sNow += String.valueOf(vNow.getDate());
+		sNow += String.valueOf(vNow.getHours());
+		sNow += String.valueOf(vNow.getMinutes());
+		sNow += String.valueOf(vNow.getSeconds());
+		sNow += String.valueOf((int)((Math.random()*9+1)*1000));
+		System.out.println("这里是sNow:"+ sNow);
+		System.out.println("这里是转换后的sNow:"+ String.valueOf((Object)sNow));*/
+		
+		//x表示药品名称，y表示对应的药品数量
+		Map<String, Integer> map = new HashMap<String, Integer>();
+	
+		List<OutStore> outStores = new OutStoreService().findByTime();
+		for (OutStore outStore : outStores) {
+			List<OutDetail> details = new OutDetailService().findByOutStoreId();
+			for (OutDetail detail : details) {
+				Inventory inventory = new InventoryService().find(detail.getInventory().getId());
+				String name = inventory.getDrugInfo().getName();
+				int number = inventory.getNum();
+				
+				//通过name获取对应的value，进行＋操作，如果不存在对应的name，则返回空，空+int=int
+				if(map.get(name) != null) {
+					number = map.get(name) + number;
+				}
+				map.put(name, number);
+			}
+		}
+		
+	}
+}

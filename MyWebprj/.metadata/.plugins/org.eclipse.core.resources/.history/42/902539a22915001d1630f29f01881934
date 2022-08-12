@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>会诊测试页</title>
+<link rel="import" href="Chat.html" id="page">
+</head>
+<script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+<body>
+	<form action="http://192.168.1.167:8080/talk/Dialogue" method="post">
+		<input name="host" type="text" placeholder="请输入医生id(host)" value="">
+        <input name="guest" type="text" placeholder="请输入患者id(guest)" value="">
+        <input type="button" onclick="click()" value="确定">
+    </form>
+    
+    <script type="text/javascript">
+    function click() {
+    	document;
+	}
+    	
+    </script>
+</body>
+</html>

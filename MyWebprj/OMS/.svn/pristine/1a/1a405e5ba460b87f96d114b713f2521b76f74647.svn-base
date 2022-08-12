@@ -1,0 +1,214 @@
+package com.gxnu.action.doctor;
+
+import java.io.IOException;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Inventory;
+import com.gxnu.entity.OutDetail;
+import com.gxnu.entity.OutStore;
+import com.gxnu.entity.Patient;
+import com.gxnu.entity.Recipe;
+import com.gxnu.service.IDoctorService;
+import com.gxnu.service.IInventoryService;
+import com.gxnu.service.IOutDetailService;
+import com.gxnu.service.IOutStoreService;
+import com.gxnu.service.IPatientService;
+import com.gxnu.service.IRecipeService;
+
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.InventoryService;
+import com.gxnu.service.imp.OutDetailService;
+import com.gxnu.service.imp.OutStoreService;
+import com.gxnu.service.imp.PatientService;
+import com.gxnu.service.imp.RecipeService;
+import com.gxnu.util.Data;
+import com.gxnu.util.SmsUtil;
+
+@WebServlet(urlPatterns = { "/recipe" })
+public class RecipeAction extends HttpServlet {
+	// 继承父类javax.servlet.http.HttpServlet
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 不论get、post请求，均执行dopost方法
+		doPost(req, resp);
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String op = req.getParameter("OP");
+		
+		if (op != null && "new".equals(op)) {
+			String doctoridstr = req.getParameter("doctorid");
+			String patientidstr = req.getParameter("patientid");
+
+			int doctorid = 0;
+			if (doctoridstr != null) {
+				doctorid = Integer.parseInt(doctoridstr);
+
+			}
+
+			int patientid = 0;
+			if (patientidstr != null) {
+				patientid = Integer.parseInt(patientidstr);
+
+			}
+			// 业务层根据id查找医生和患者
+			IDoctorService doctorService = new DoctorService();
+			Doctor doctor = doctorService.find(doctorid);
+
+			IPatientService patientService = new PatientService();
+			Patient patient = patientService.find(patientid);
+
+			// 创建日期对象
+			Date date = new Date();
+			// 格式化时间
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time = sdf.format(new Date());
+
+			// 生成两位随机数
+			int max = 9999;
+			int min = 10;
+			int s = (int) min + (int) (Math.random() * (max - min));
+			Random random = new Random();
+			Integer number = random.nextInt(900000) + 100000;
+			int proof = doctorid + (patientid * 100) + (s * 100000);//取药码
+			System.out.println(proof);
+			String yuliu = "";
+			Recipe recipe = new Recipe(time, proof, patient, doctor, yuliu);
+			IRecipeService recipeService = new RecipeService();
+			
+			// 生成处方表记录
+			recipeService.add(recipe);
+			resp.sendRedirect(Data.URL + "/Doctor/Recipe.jsp");
+
+		}else if (op != null && "adddrug".equals(op)) {
+			String druginfoidstr = req.getParameter("druginfo");
+			String havestr = req.getParameter("have");
+			String numstr = req.getParameter("num");
+			String measureidsrt = req.getParameter("measure");
+			String use = req.getParameter("use");
+			String pricestr = req.getParameter("price");
+			
+			int druginfoid = 0;
+			if (druginfoidstr != null) {
+				druginfoid = Integer.parseInt(druginfoidstr);
+
+			}
+			
+			int have = 0;
+			if (havestr != null) {
+				have = Integer.parseInt(havestr);
+
+			}
+			
+			int num = 0;
+			if (numstr != null) {
+				num = Integer.parseInt(numstr);
+
+			}
+			
+			int measureid = 0;
+			if (measureidsrt != null) {
+				measureid = Integer.parseInt(measureidsrt);
+
+			}
+			
+			int price = 0;
+			if (pricestr != null) {
+				price = Integer.parseInt(pricestr);
+
+			}
+			
+			IOutStoreService outStoreService =new OutStoreService();
+			List<OutStore> outStores = outStoreService.findAll();
+			List<Integer> nums = new ArrayList<Integer>();
+			for(OutStore outStore : outStores) {
+				nums.add(outStore.getId());
+			}
+			int maxId = Collections.max(nums);//获取出库表最大id
+			
+			IInventoryService inventoryService =new InventoryService();
+			List<Inventory> inventories = inventoryService.find();
+			int inventoryId=0;
+			for (Inventory inventory : inventories) {
+				if (inventory.getDrugInfo().getId()==druginfoid) {
+					inventoryId=inventory.getId();//查询对应药品的库存id；
+					break;
+				}
+		}
+			Inventory inventory= inventoryService.find(inventoryId);
+			OutStore outStore= outStoreService.find(maxId);
+			int sprice= price*2;//售价
+			IOutDetailService outDetailService =new OutDetailService();
+			OutDetail outDetail =new OutDetail(inventory, outStore, sprice, num, use);
+			outDetailService.add(outDetail);
+			
+			IOutDetailService outDetailService2 = new OutDetailService();
+			List<OutDetail> outDetails = outDetailService2.findAll();
+			req.setAttribute("OUTDETAIL", outDetails);
+			//请求转发
+			req.getRequestDispatcher("Doctor/Recipe.jsp").forward(req, resp);
+		}else if (op != null && "send".equals(op)) {
+			//获取用户输入手机号
+			String tel = req.getParameter("tel");
+			String idstr = req.getParameter("id");
+			
+			int id = 0;
+			if (idstr != null) {
+				id = Integer.parseInt(idstr);
+			}
+			IRecipeService recipeService =new RecipeService();
+			List<Recipe> recipes = recipeService.find();
+			int recipeid=0;
+			for (Recipe recipe : recipes) {
+				if (recipe.getPatient().getId()==id ) {
+					
+					recipeid=recipe.getId();//查询对应处方表id；
+				
+				}
+		}
+			Recipe recipe= recipeService.find(recipeid);
+			int proof =recipe.getProof();
+
+			String proofStr = Integer.toString(proof);//取药码转换为string类型
+			//把验证码存到session会话对象中
+			HttpSession session = req.getSession();
+			SmsUtil sms = new SmsUtil(); //调用发送短信util类
+			//模板数组是在类SmsUtil中已设置好，根据不同请求选择响应的短信模板即可
+			sms.Sendms(tel, sms.templateId[4], proofStr);
+			//调用业务方法查找存在用户
+			IPatientService patientService = new PatientService();
+			Patient patient = patientService.findrole(tel);
+			
+			resp.sendRedirect(Data.URL + "/Doctor/Recipe.html");
+			
+			
+		}else {
+			String idstr = req.getParameter("id");
+			int id = 0;
+			if (idstr != null) {
+				id = Integer.parseInt(idstr);
+
+			}
+			IOutDetailService outDetailService =new OutDetailService();
+			outDetailService.remove(id);
+			resp.sendRedirect(Data.URL + "/Doctor/Recipe.jsp");
+		}
+	}
+}

@@ -1,0 +1,9 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+
+public class Log implements Serializable{
+	private int id;
+	
+	
+}

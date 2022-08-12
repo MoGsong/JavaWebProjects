@@ -1,0 +1,216 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import com.gxnu.entity.Schedule;
+import com.gxnu.entity.Unit;
+import com.gxnu.entity.Doctor;
+
+/**
+ * 排班信息持久层
+ * @author ymp0519
+ *
+ */
+
+
+public class ScheduleDAO  extends C3P0BaseDAO{
+
+/**
+ * 排班信息的添加
+ * @param schedule
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void add(Schedule schedule) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+
+		PreparedStatement pstmt = 
+				conn.prepareStatement("insert into schedule (unit,doctor,period,week,day,yuliu) values(?,?,?,?,?,?)");
+
+		pstmt.setInt(1,schedule.getUnit().getId());
+		pstmt.setInt(2,schedule.getDoctor().getId());
+		pstmt.setString(3,schedule.getPeriod());
+		pstmt.setString(4,schedule.getWeek());
+		pstmt.setTimestamp(5,schedule.getDay());
+		pstmt.setString(6, schedule.getYuliu());
+
+		pstmt.executeUpdate();
+	
+		super.closeConnection(conn);
+	}
+
+/**
+ * 排班信息的修改
+ * @param schedule
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void merge(Schedule schedule) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = 
+				conn.prepareStatement("update schedule set unit=?,doctor=?,period=?,week=?,day=?,yuliu=? where id=?");
+		
+		pstmt.setInt(1,schedule.getUnit().getId());
+		pstmt.setInt(2,schedule.getDoctor().getId());
+		pstmt.setString(3,schedule.getPeriod());
+		pstmt.setString(4,schedule.getWeek());
+		pstmt.setTimestamp(5, schedule.getDay());
+		pstmt.setString(6, schedule.getYuliu());
+		pstmt.setInt(7,schedule.getId());//id
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+/**
+ * 排班信息的修改
+ * @param schedule
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void delete(Schedule schedule) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("delete from schedule where id=?");
+		pstmt.setInt(1, schedule.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	/**
+	 * 通过id查找排班
+	 * @param id
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public Schedule findById(int id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		Schedule schedule  = new Schedule();
+		PreparedStatement pstmt = conn.prepareStatement("select * from schedule where id = ?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()){ 
+			int unit_id = rs.getInt("unit");  
+			int doctor_id = rs.getInt("doctor");
+			String period= rs.getString("period");
+			String week =rs.getString("week");
+			Timestamp day = rs.getTimestamp("day");
+			String yuliu= rs.getString("yuliu");
+			
+			DoctorDAO doctorDAO = new DoctorDAO();
+			Doctor doctor = doctorDAO.findByPrimaryKey(doctor_id);
+			
+			UnitDAO unitDAO = new UnitDAO();
+			Unit unit = unitDAO.findById(unit_id);
+
+			schedule= new Schedule(id,unit,doctor,period,week,day,yuliu);
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return schedule;
+	}
+
+	/**
+	 * 查询所有排班信息
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Schedule> findAll() throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from schedule");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			int unit_id = rs.getInt("unit");  
+			int doctor_id = rs.getInt("doctor");
+			String period= rs.getString("period");
+			String week =rs.getString("week");
+			Timestamp day = rs.getTimestamp("day");
+			String yuliu= rs.getString("yuliu");
+			
+			DoctorDAO doctorDAO = new DoctorDAO();
+			Doctor doctor = doctorDAO.findByPrimaryKey(doctor_id);
+			
+			UnitDAO unitDAO = new UnitDAO();
+			Unit unit = unitDAO.findById(unit_id);
+			schedules.add( new Schedule(id,unit,doctor,period,week,day,yuliu));
+			
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return schedules;
+	}
+	
+	
+/**
+ * 分页
+ * @param currentPage
+ * @param pageSize
+ * @return
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public List<Schedule> findAll(int currentPage, int pageSize) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from schedule limit ?,?");
+		pstmt.setInt(1,(currentPage-1)*pageSize);
+		pstmt.setInt(2,pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			int unit_id = rs.getInt("unit");  
+			int doctor_id = rs.getInt("doctor");
+			String period= rs.getString("period");
+			String week =rs.getString("week");
+			Timestamp day = rs.getTimestamp("day");
+			String yuliu= rs.getString("yuliu");
+			
+			DoctorDAO doctorDAO = new DoctorDAO();
+			Doctor doctor = doctorDAO.findByPrimaryKey(doctor_id);
+			
+			UnitDAO unitDAO = new UnitDAO();
+			Unit unit = unitDAO.findById(unit_id);
+			schedules.add( new Schedule(id,unit,doctor,period,week,day,yuliu));
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return schedules;
+	}
+	
+	
+}

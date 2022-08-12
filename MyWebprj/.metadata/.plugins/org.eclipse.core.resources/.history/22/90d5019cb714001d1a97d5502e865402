@@ -1,0 +1,5 @@
+package com.gxnu.dao;
+
+public class DialogueDAO extends C3P0BaseDAO{
+	
+}

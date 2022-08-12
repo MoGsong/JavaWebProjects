@@ -1,0 +1,96 @@
+package com.gxnu.service.imp;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.dao.DoctorDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.service.IDoctorService;
+/**
+ * 权限操作对应的业务类
+ * @author johny
+ * 业务层须合理调用持久层方法，完成具体业务功能
+ * 处理异常
+ */
+public class DoctorService implements IDoctorService{
+	@Override
+	public void add(Doctor doctor) {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		try {
+			doctorDAO.add(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void remove(int id) {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		Doctor doctor = new Doctor(); //id=0
+		doctor.setId(id);
+		try {
+			doctorDAO.delete(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void update(Doctor doctor) {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		try {
+			doctorDAO.update(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Doctor find(int id) {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		Doctor doctor = new Doctor();
+		try {
+			doctor = doctorDAO.findByPrimaryKey(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+		return doctor;
+	}
+
+	@Override
+	public List<Doctor> find() {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		try {
+			doctors = doctorDAO.findAll();
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+		return doctors;
+	}
+
+	@Override
+	public List<Doctor> findByRole(int roleid) {
+		//创建持久层类对象
+		DoctorDAO doctorDAO = new DoctorDAO();
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		try {
+			doctors = doctorDAO.findAll();
+		} catch (ClassNotFoundException | SQLException e) {
+			//处理异常，打印异常的轨迹
+			e.printStackTrace();
+		}
+		return doctors;
+	}
+}

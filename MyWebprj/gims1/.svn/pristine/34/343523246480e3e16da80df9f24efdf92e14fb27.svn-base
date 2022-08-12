@@ -1,0 +1,115 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.gxnu.service.IGuideservice;
+
+import com.gxnu.entity.Guide;
+
+import com.gxnu.service.imp.Guideservice;
+
+@WebServlet(urlPatterns = { "/guide" })
+@MultipartConfig
+public class Guideaction extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
+		
+		String URL = req.getParameter("url");
+
+		String op = req.getParameter("OP");
+		if (op != null && "add".equals(op)) {
+
+			//获取页面文件框选中文件
+			Part file =req.getPart("pic_name");
+			String info=file.getHeader("Content-Disposition");
+			//截取文件的后缀
+			int b=info.indexOf("filename=\"")+10;
+			int e=info.length()-1;
+			String filename=info.substring(b,e);
+//			System.out.println(filename);
+			//获取部署环境的根目录,此处WebRoot  + 文件夹名 ，此处images  +文件名，此处为 fileName
+			//获取的是项目部署后的位置
+			file.write(getServletContext().getRealPath("/")+"web/"+"images/"+filename);
+			// 调用业务方法
+			Guide guide = new Guide(filename, URL);
+			IGuideservice guideservice = new Guideservice();
+			guideservice.add(guide);
+			System.out.println(getServletContext().getRealPath("/")+"web/"+"images/"+filename);
+			// 跳转到下一个资源
+			resp.sendRedirect("http://192.168.1.202:8080/GIMS/web/Guide.jsp");
+		} else if (op != null && "toupdate".equals(op)) {
+
+			String strid = req.getParameter("id");
+			int id = 0;
+			if (strid != null) {
+				id = Integer.parseInt(strid);
+			}
+
+			//
+			IGuideservice guideservice = new Guideservice();
+			Guide guide = guideservice.find(id);
+			req.setAttribute("GUIDE", guide);
+
+			// 请求转发
+			req.getRequestDispatcher("web/updateGuide.jsp").forward(req, resp);
+		} else if (op != null && "doupdate".equals(op)) {
+			//获取页面文件框选中文件
+			Part file =req.getPart("pic_name");
+			String info=file.getHeader("Content-Disposition");
+			//截取文件的后缀
+			int b=info.indexOf("filename=\"")+10;
+			int e=info.length()-1;
+			String filename=info.substring(b,e);
+			
+//			System.out.println(filename);
+			//获取部署环境的根目录,此处WebRoot  + 文件夹名 ，此处images  +文件名，此处为 fileName
+			//获取的是项目部署后的位置
+			file.write(getServletContext().getRealPath("/")+"web/"+"images/"+filename);
+			
+			String strid = req.getParameter("id");
+			int id = 0;
+			if (strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			// 调用业务方法
+			Guide guide = new Guide(id, filename, URL);
+
+			IGuideservice guideservice = new Guideservice();
+			guideservice.update(guide);
+
+			// 跳转到下一个资源
+			resp.sendRedirect("http://192.168.1.202:8080/GIMS/web/Guide.jsp");
+		} else {
+			String strid = req.getParameter("id");
+			int id = 0;
+			if (strid != null) {
+				id = Integer.parseInt(strid);
+			}
+
+			// 调用业务方法，实现删除某条邮件记录
+			IGuideservice guideservice = new Guideservice();
+			guideservice.remove(id);
+
+			// 跳转到下一资源
+			resp.sendRedirect("http://192.168.1.202:8080/GIMS/web/Guide.jsp");
+
+		}
+	}
+}

@@ -1,0 +1,84 @@
+package com.gxnu.action.doctor;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Patient;
+import com.gxnu.entity.Recipe;
+import com.gxnu.service.IDoctorService;
+import com.gxnu.service.IPatientService;
+import com.gxnu.service.IRecipeService;
+import com.gxnu.service.IRecordService;
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.PatientService;
+import com.gxnu.service.imp.RecipeService;
+import com.gxnu.service.imp.RecordService;
+import com.gxnu.util.Data;
+
+@WebServlet(urlPatterns = { "/recipe" })
+public class RecipeAction extends HttpServlet {
+	// 继承父类javax.servlet.http.HttpServlet
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 不论get、post请求，均执行dopost方法
+		doPost(req, resp);
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String op = req.getParameter("OP");
+System.out.println(op);
+		if (op != null && "new".equals(op)) {
+			String doctoridstr = req.getParameter("doctorid");
+			String patientidstr = req.getParameter("patientid");
+			
+			int doctorid = 0;
+			if (doctoridstr != null) {
+				doctorid = Integer.parseInt(doctoridstr);
+
+			}
+			
+			int patientid = 0;
+			if (patientidstr != null) {
+				patientid = Integer.parseInt(patientidstr);
+
+			}
+			//业务层根据id查找医生和患者
+			IDoctorService doctorService =new DoctorService();
+			Doctor doctor =doctorService.find(doctorid);
+			
+			IPatientService patientService =new PatientService();
+			Patient patient =patientService.find(patientid);
+			
+			//创建日期对象
+			Date date =new Date();
+			//格式化时间
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+			String time = sdf.format(new Date());
+			
+			//生成两位随机数
+			int max =99;
+			int min =10;
+			int s = (int) min + (int) (Math.random() * (max - min));
+			int proof = doctorid+(patientid*100)+(s*10000);
+			String yuliu="";
+			Recipe recipe =new Recipe(time, proof, patient, doctor, yuliu);
+			IRecipeService recipeService =new RecipeService();
+			System.out.println(recipe);
+			//生成处方表记录
+			recipeService.add(recipe);
+		}
+
+	}
+}

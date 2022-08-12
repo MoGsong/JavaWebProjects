@@ -1,0 +1,146 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.gxnu.entity.Picture;
+import com.gxnu.service.IPictureService;
+import com.gxnu.service.imp.PictureService;
+import com.gxnu.util.Data;
+@WebServlet(urlPatterns = {"/picture"})
+//指定当前servlet支持接收页面提交过来的非文本数据，如文件
+@MultipartConfig
+public class PictureAction extends HttpServlet {
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String op =  req.getParameter("OP");
+
+		if(op != null && "add".equals(op)) {  //添加分支
+			//获取页面提交的请求参数，即添加的信息
+			String url = req.getParameter("url");
+			String content = req.getParameter("content");
+			
+			//获取页面文件框中的文件
+	    	Part file = req.getPart("pic");
+	    	  
+	    	//通过http协议头部消息中的key “Content-Disposition”可以获取上传文件的一些信息
+	    	String info = file.getHeader("Content-Disposition");
+	    	//截取文件的后缀
+	    	int b =  info.indexOf("filename=\"")+10;
+	    	int e = info.length()-1;
+	    	String filename = info.substring(b, e);
+
+	          
+	        String savePath = getServletContext().getRealPath("/")+filename;
+	        System.out.println(savePath);
+	  		file.write(savePath);
+	  		
+
+			//调用业务方法，实现添加
+			IPictureService pictureService = new PictureService();
+			Picture picture = new Picture(filename,url,content);
+			pictureService.add(picture);
+			
+			
+			//跳转到下一资源
+			resp.sendRedirect(Data.URL+"/web/picture.jsp");
+		}else if(op != null && "toupdate".equals(op)){  //去修改分支，根据id获取某一对象
+
+			//获取页面传递的请求参数，即修改的记录id信息
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			
+			
+			//调用业务方法，实现根据id查询某条记录的全部信息
+			IPictureService pictureService = new PictureService();
+			Picture picture = pictureService.findById(id);
+			//把完整的邮件信息存放到请求对象中
+			req.setAttribute("PICTURE",picture );
+			
+			//跳转下一资源，请求转发
+			req.getRequestDispatcher("web/UpdatePicture.jsp").forward(req, resp);
+			
+		}else if(op != null && "doupdate".equals(op)) {   //修改分支
+			
+			
+			String url = req.getParameter("url");
+			String content = req.getParameter("content");
+			
+			//获取页面文件框中的文件
+	    	Part file = req.getPart("pic");
+	    	  
+	    	//通过http协议头部消息中的key “Content-Disposition”可以获取上传文件的一些信息
+	    	String info = file.getHeader("Content-Disposition");
+	    	//截取文件的后缀
+	    	int b =  info.indexOf("filename=\"")+10;
+	    	int e = info.length()-1;
+	    	String filename = info.substring(b, e);
+
+	    	//修改时根据是否上传新图片获取文件名，判断文件名是否为空
+	        if(!filename.equals("")) { //上传新图片，filename不为空
+	        	String savePath = getServletContext().getRealPath("/")+filename;		      
+		  		file.write(savePath);
+		  		
+		  	    //获取页面传递的请求参数，即修改的记录id信息
+				String strid = req.getParameter("id");
+				int id = 0;
+				if(strid != null) {
+					id = Integer.parseInt(strid);
+				}
+
+			  	//调用业务方法，实现添加
+				IPictureService pictureService = new PictureService();
+				Picture picture = new Picture(id,filename,url,content);  //更新时使用新图片名
+				pictureService.update(picture);
+	        }else {              //不上传新图片，获取原图片名
+	        	String haved_name = req.getParameter("haved_name");
+	        	//获取页面传递的请求参数，即修改的记录id信息
+				String strid = req.getParameter("id");
+				int id = 0;
+				if(strid != null) {
+					id = Integer.parseInt(strid);
+				}
+				//调用业务方法，实现添加
+				IPictureService pictureService = new PictureService();
+				Picture picture = new Picture(id,haved_name,url,content);  //更新时使用原图片名
+				pictureService.update(picture);
+	        }
+	        
+			//跳转到下一资源
+			resp.sendRedirect(Data.URL+"/web/picture.jsp");
+		}else {
+			//获取页面传递的请求参数，即删除的记录id信息
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			
+			
+			//调用业务方法，根据id删除某条记录
+			IPictureService pictureService = new PictureService();
+			pictureService.remove(id);
+			
+			//跳转到下一资源
+			resp.sendRedirect(Data.URL+"/web/picture.jsp");
+		}
+	}
+
+}

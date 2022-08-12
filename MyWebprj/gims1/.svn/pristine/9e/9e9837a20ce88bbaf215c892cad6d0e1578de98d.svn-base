@@ -1,0 +1,116 @@
+package com.gxnu.action;
+
+
+
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.entity.Rss;
+import com.gxnu.service.IRssService;
+import com.gxnu.service.imp.RssService;
+
+
+
+
+@WebServlet(urlPatterns = {"/rss"})
+public class RssAction extends HttpServlet {
+     
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		 doPost(req,resp);
+		 
+		
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
+		
+		String op =req.getParameter("op");
+       //System.out.println(op);		
+		 if(op!=null&&"add".equals(op)) {
+			 //获取页面提交过来的请求参数，即添加的记录信息
+			 String title =req.getParameter("textfield1");
+			 String url =req.getParameter("textfield2");
+			 String content =req.getParameter("textfield3");
+			 String updatetime =req.getParameter("textfield4");
+			
+		 
+	
+			 Rss rss =new Rss(title,url,content,updatetime);
+			 IRssService rssService =new RssService();
+			 rssService.add(rss);
+		  
+		 //跳转
+		 resp.sendRedirect("http://192.168.1.196:8080/GIMS/web/rss.jsp");
+		 
+	
+				 }else  if(op!=null&&"toupdate".equals(op)) {
+					 //获取页面提交过来的请求参数，即添加的记录信息
+					 
+					 String strid=req.getParameter("id");
+					 int id=0;
+					 if(strid!=null) {
+						 id=Integer.parseInt(strid);
+						 
+					 }
+				 
+				 IRssService rssService =new RssService();
+				 Rss rss=rssService.find(id);
+				 //把完整的RSS存放到请求对象中
+				  req.setAttribute("RSS", rss);
+				 
+				 //跳转(请求转发)
+				 req.getRequestDispatcher("web/updaterss.jsp").forward(req, resp);
+				 
+				 }else if(op!=null&&"doupdate".equals(op)) {
+					 
+					 String strid=req.getParameter("id");
+					 int id=0;
+					 if(strid!=null) {
+						 id=Integer.parseInt(strid); 
+					 }
+					 //System.out.println("测试一下");
+					 String title =req.getParameter("textfield1");
+					 String url =req.getParameter("textfield2");
+					 String content =req.getParameter("textfield3");
+					 String updatetime =req.getParameter("textfield4");
+					 
+					 IRssService rssService =new RssService();
+					 Rss rss =new Rss(id,title,url,content,updatetime);
+					 rssService.update(rss);
+					  
+					 //跳转
+					 resp.sendRedirect("http://192.168.1.196:8080/GIMS/web/rss.jsp");
+			 
+					 
+			 
+				 }else  {
+			 
+				 
+				 String strid=req.getParameter("id");
+				 int id=0;
+				 if(strid!=null) {
+					 id=Integer.parseInt(strid);
+					 
+				 }
+				 IRssService rssService =new RssService();
+				 rssService.remove(id);
+				 
+				
+				  
+				 //跳转
+				 resp.sendRedirect("http://192.168.1.196:8080/GIMS/web/rss.jsp");
+				 } 
+			 }
+			 
+				 }
+		 

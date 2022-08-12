@@ -1,0 +1,215 @@
+package com.gxnu.util;
+
+import javax.swing.*;
+
+import com.gxnu.dao.PatientDAO;
+import com.gxnu.entity.Patient;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import java.sql.SQLException;
+import java.util.Properties;
+public class uClient extends JFrame implements ActionListener{
+	private static final long serialVersionUID = 1L;
+
+	  public static void main(String[] args) throws ClassNotFoundException,
+	  SQLException, IOException{ Patient patient = new
+	  PatientDAO().findByPrimaryKey(2); new uClient(patient); }
+	 
+	// 说明：一个类需要页面的显示，则那个类要继承JFrame。
+	// 属性
+	// 文本域
+	private JTextArea jta;
+	// 滚动条
+	private JScrollPane jsp;
+	// 面板里面是文本框和按钮
+	private JPanel jp;
+	private JTextField jtf;
+	private JButton jb ;
+
+	BufferedWriter bw = null;
+	
+	private String path;
+	//获取属性文件路径
+	public String getPath() throws IOException {
+		URL cl = this.getClass().getClassLoader().getResource("");
+	    String clp = cl.getPath().substring(1);
+	    clp = clp.substring(0, clp.length()-14) + "src/" +"chat.properties";
+	    clp = clp.replace("%20", " ");
+	    //System.out.println(clp);
+	    return clp;
+	}
+	
+	private  int clientPort;
+	private  String clientIp;
+	public void init() {
+		Properties pro =new Properties();
+		try {
+			FileReader in = new FileReader(new File(path));
+			pro.load(in);
+			clientPort = Integer.parseInt(pro.getProperty("serverPort"));
+			clientIp = pro.getProperty("clientIp");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	//
+	public uClient(Patient patient) throws IOException{
+		this.path = this.getPath();
+		this.init();
+		String name = patient.getName();
+		// 初始化上面的属性
+		jta = new JTextArea();
+		
+		// 将文本域添加到滚动条中
+		jsp = new JScrollPane(jta);
+		jp = new JPanel();
+		jtf =new JTextField(15);
+		jb = new JButton("发送");
+
+		// 把按钮和文本框添加到面板中
+        jp.add(jtf);
+		jp.add(jb);
+
+		// 把滚动条和面板添加到JFrame中去
+		this.add(jsp,BorderLayout.CENTER); //这个设置在中间
+		this.add(jp,BorderLayout.SOUTH); //南
+		this.setName(name);
+		this.setTitle(patient.getName()+"会诊室");
+		this.setSize(500,500);
+		this.setLocation(200, 200);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+        jb.addActionListener(this);
+
+		// 回车点击事件
+
+		jtf.addKeyListener(new KeyAdapter() {
+	        public void keyTyped(KeyEvent e) {
+		     if((char)e.getKeyChar()==KeyEvent.VK_ENTER) {
+                 useVoid01();			 
+		     }
+	       }
+        });
+
+
+
+        try{
+		/*******客户端 TCP协议*********/
+		// 1.创建一个客户端的套接字（尝试连接）
+		//Socket socket = new Socket(clientIp,clientPort);
+        	Socket socket = new Socket(clientIp, clientPort);
+		// 2.获取socket通道的输入流
+		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		
+		// 3
+        bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+		String line = null;
+		while((line = br.readLine()) !=null){
+			jta.append(line + "\n");
+		}
+		// 3. 获取输出流
+
+		// 4.关闭流
+		socket.close();
+
+		/******************************/
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	// 构造器
+	public uClient() throws IOException{
+		
+		// 初始化上面的属性
+		jta = new JTextArea();
+		
+		// 将文本域添加到滚动条中
+		jsp = new JScrollPane(jta);
+		jp = new JPanel();
+		jtf =new JTextField(15);
+		jb = new JButton("发送");
+
+		// 把按钮和文本框添加到面板中
+        jp.add(jtf);
+		jp.add(jb);
+
+		// 把滚动条和面板添加到JFrame中去
+		this.add(jsp,BorderLayout.CENTER); //这个设置在中间
+		this.add(jp,BorderLayout.SOUTH); //南
+
+		this.setTitle(" 客户端");
+		this.setSize(500,500);
+		this.setLocation(200, 200);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
+        jb.addActionListener(this);
+		bw.write("患者进入会诊室");
+		bw.newLine(); // 换行 
+		bw.flush();  // 刷新
+		// 回车点击事件
+
+		jtf.addKeyListener(new KeyAdapter() {
+	        public void keyTyped(KeyEvent e) {
+		     if((char)e.getKeyChar()==KeyEvent.VK_ENTER) {
+                 useVoid01();			 
+		     }
+	       }
+        });
+
+
+
+        try{
+		/*******客户端 TCP协议*********/
+		// 1.创建一个客户端的套接字（尝试连接）
+		//Socket socket = new Socket(clientIp,clientPort);
+        	Socket socket = new Socket(clientIp, clientPort);
+		// 2.获取socket通道的输入流
+		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		
+		// 3
+        bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+		String line = null;
+		while((line = br.readLine()) !=null){
+			jta.append(line + "\n");
+		}
+		// 3. 获取输出流
+
+		// 4.关闭流
+		socket.close();
+
+		/******************************/
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void actionPerformed(ActionEvent e){
+		useVoid01();
+	}
+	
+	public void useVoid01(){
+		// 1.获取文本框中需要发送的内容
+		String text = jtf.getText();
+		// 2. 拼接内容
+		text = this.getName()+"说:"+ text;
+		// 3.自己显示
+		jta.append(text + "\n");
+		try{
+		// 4.发送
+			bw.write(text);
+			bw.newLine(); // 换行 
+			bw.flush();  // 刷新
+		// 5.清空
+		    jtf.setText("");
+
+		}catch(IOException e1){
+			e1.printStackTrace();
+		}
+	}
+	//行为
+}

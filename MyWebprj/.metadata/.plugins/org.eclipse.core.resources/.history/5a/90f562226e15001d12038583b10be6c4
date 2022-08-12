@@ -1,0 +1,35 @@
+package com.gxnu.util;
+
+public class Wrap {
+	String message = "";
+	
+	public String Prompt() {
+		//提示
+		message = "<div class=\"item item-center\"><span>会诊开始......</span></div>";
+		
+		return message;		
+	}
+	public String sendWrap(String info) {
+		//发送消息后的HTML
+		//src是头像路径
+		message = "<div class=\"bubble bubble-left\">"+info+"</div>"
+				+ "<div class=\"avatar\">"
+				+ 	"<img src=\"https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3313909130,2406410525&fm=15&gp=0.jpg\" />"
+				+ "</div>";
+		return message;		
+	}
+	
+	public String receiveWrap(String info) {
+		//接收到消息后显示的HTML
+		//src是头像路径
+		message = "<div class=\"item item-left\">\r\n" + 
+				"     <div class=\"avatar\"><img\r\n" + 
+				"      			src=\"https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=25668084,2889217189&fm=26&gp=0.jpg\" />\r\n" + 
+				"       </div>\r\n" + 
+				"         <div class=\"bubble bubble-left\">"+info+"</div>\r\n" + 
+				"     </div>";
+		
+		return message;		
+	}
+	
+}

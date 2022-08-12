@@ -1,0 +1,114 @@
+package com.gxnu.action.patient;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import com.gxnu.entity.Patient;
+import com.gxnu.service.imp.PatientService;
+import com.gxnu.util.Data;
+
+
+
+
+@WebServlet(urlPatterns = {"/patient"})
+@MultipartConfig
+public class patientsAction extends HttpServlet{
+	
+	
+
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+		
+		
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String op = req.getParameter("OP");			
+		   if(op!=null && "exits".equals(op)) {	
+			   
+			//��ȡҳ�洫�ݹ�����������������޸ĵļ�¼id��Ϣ
+			String strid = req.getParameter("id");				
+			int id=0;
+			if(strid!=null) {
+				id = Integer.parseInt(strid); 
+			}	
+			
+			//��ȡҳ���ύ�������������������ӵļ�¼��Ϣ
+			String Name = req.getParameter("name"); //��ȡҳ���name
+			String Sex = req.getParameter("sex");
+			int Age = Integer.parseInt( req.getParameter("age"));
+			String Password = req.getParameter("password");
+			String Idcard  = req.getParameter("idcard");
+			String Tel = req.getParameter("tel");
+			String Email = req.getParameter("email");
+			//String Pic = req.getParameter("pic");
+			String Yuliu = req.getParameter("yuliu");
+			String username = req.getParameter("username");
+			
+			//��ȡ�ϴ���ͷ���ļ�				
+			   Part file= req.getPart("pic");
+			   
+			   //ͨ��httpЭ����Ϣ��key  Content-Disposition			 
+			    String info=file.getHeader("Content-Disposition");
+			    //��ȡ�ļ��ĺ�׺
+			    int b=info.indexOf("filename=\"")+10;  //ȥ�ļ������������ԣ���jsp�ȵ�
+			    int e=info.length()-1; 
+			    String filename=info.substring(b,e);
+			    System.out.println(filename);
+			
+			  //����ҵ�񷽷����޸��ʼ���Ϣ			
+				 PatientService patientService=new PatientService();							
+				 Patient patient=new Patient(id,Name,Sex,Age,username,Password,Idcard,filename,Tel,Email,Yuliu);
+				 patientService.update(patient);
+				
+				
+				//��ת���¸���Դ������ת��
+		  		   resp.sendRedirect(Data.URL+"/Patient/Test.html");
+				 
+		 }else if (op != null && "roupdate".equals(op)) {
+			 			 
+			//��ȡҳ�洫�ݹ����������������ɾ���ļ�¼id��Ϣ
+				String strid = req.getParameter("id");				
+				int id=0;
+				if(strid!=null) {
+					id = Integer.parseInt(strid); 
+					System.out.println(strid+"..........................");
+					
+					//����ҵ�񷽷�
+					 PatientService patientService=new PatientService();					 
+					 patientService.remove(id = Integer.parseInt(strid));
+					 
+					 
+					//��ת���¸���Դ������ת��http://localhost:8080/OMS/Patient/Login.jsp
+			  		   resp.sendRedirect(Data.URL+"/Patient/Login.jsp");
+			  		   
+				}else if (op != null && "doupdate".equals(op)) {
+					System.out.println("������Ϣ�޸�");
+//					 String patid= req.getParameter("id");
+//			         PatientService ps = new PatientService();
+//			         Patient patient = ps.find(Integer.parseInt(patid));
+//			         HttpSession session = req.getSession();								
+//						session.setAttribute(Data.PATIENT, patient);
+//						
+//						//��ת���¸���Դ������ת��
+//				  		   resp.sendRedirect(Data.URL +"/Patient/Patient.jsp");
+					req.getRequestDispatcher(Data.URL +"/Patient/Patient.jsp").forward(req, resp);
+				}else {
+					System.out.println("hello");
+				}
+		 }
+	
+}}

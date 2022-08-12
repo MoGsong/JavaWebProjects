@@ -1,0 +1,22 @@
+package com.gxnu.util;
+
+/**
+ * 
+ * @author ymp0519
+ *
+ */
+public class Data {
+	
+	public static final String OPERATOR = "OPERATOR"; //操作员
+	public static final String ROLE = "ROLE";         //角色
+	public static final String MENU = "MENU";         //菜单
+	public static final String AUTHORIZATION = "AUTHORIZATION";       //权限
+	public static final String PICTURE = "PICTURE";   //图片
+	public static final String INFORMATION = "INFORMATION";       //风俗信息
+
+	public static final String URL = "http://192.168.1.167:8080/ZSTS";     //项目url
+
+
+
+
+}

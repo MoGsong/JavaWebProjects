@@ -1,0 +1,74 @@
+package com.gxnu.entity;
+
+public class DrugInfo {
+	private int id;
+	private String name;
+	private String element;
+	private String effect;
+	private String notice;
+	private String yuliu;
+	public DrugInfo(int id, String name, String element, String effect, String notice, String yuliu) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.element = element;
+		this.effect = effect;
+		this.notice = notice;
+		this.yuliu = yuliu;
+	}
+	public DrugInfo(String name, String element, String effect, String notice, String yuliu) {
+		super();
+		this.name = name;
+		this.element = element;
+		this.effect = effect;
+		this.notice = notice;
+		this.yuliu = yuliu;
+	}
+	public DrugInfo() {
+		super();
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getElement() {
+		return element;
+	}
+	public void setElement(String element) {
+		this.element = element;
+	}
+	public String getEffect() {
+		return effect;
+	}
+	public void setEffect(String effect) {
+		this.effect = effect;
+	}
+	public String getNotice() {
+		return notice;
+	}
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+	public String getYuliu() {
+		return yuliu;
+	}
+	public void setYuliu(String yuliu) {
+		this.yuliu = yuliu;
+	}
+	@Override
+	public String toString() {
+		return "DrugInfo [id=" + id + ", name=" + name + ", element=" + element + ", effect=" + effect + ", notice="
+				+ notice + ", yuliu=" + yuliu + "]";
+	}
+	
+	
+
+}

@@ -1,0 +1,342 @@
+<%@page import="com.gxnu.util.Data"%>
+<%@page import="com.gxnu.service.IArticleService"%>
+<%@page import="com.gxnu.entity.Article"%>
+<%@page import="java.util.List"%>
+<%@page import="com.gxnu.service.imp.ArticleService"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ 
+ <%
+	 String path = request.getContextPath();
+	 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+ 	 String url = Data.URL+"/article2";
+ %>
+
+<!Doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>科普文章</title>
+    <!-- Summernote css -->
+    <link href="static/css/summernote-bs4.css" rel="stylesheet" type="text/css">
+    <!-- plugin css file  -->
+    <link rel="stylesheet" href="static/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="static/css/dataTables.bootstrap5.min.css">
+    <!-- project css file  -->
+    <link rel="stylesheet" href="static/css/ihealth.style.min.css">
+    <!-- Bootstrap Css -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <!-- Icons Css -->
+    <link href="static/css/icons.min.css" rel="stylesheet" type="text/css">
+    <!-- App Css-->
+    <link href="static/css/app.min.css" rel="stylesheet" type="text/css">
+	
+
+</head>
+
+	
+<body>
+
+    <div id="ihealth-layout" class="theme-tradewind">
+
+        <!-- sidebar -->
+       
+        <!-- main body area -->
+        <div class="main px-lg-4 px-md-4">
+
+            <!-- Body: Header -->
+            
+
+            <!-- Body: Body -->
+            <div class="body d-flex py-lg-3 py-md-2">
+                <div class="container-xxl">
+                    <div class="row align-items-center">
+                        <div class="border-0 mb-4">
+                            <div
+                                class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                                <h3 class="fw-bold mb-0">科普文章</h3>
+                                <div class="col-auto d-flex w-sm-100">
+                                    <button type="button" class="btn btn-primary btn-set-task w-sm-100"
+                                        data-bs-toggle="modal" data-bs-target="#depadd">
+                                        
+                                         <i class="icofont-plus-circle me-2 fs-6"></i> 添加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row end  -->
+                    <div class="row clearfix g-3">
+                        <div class="col-sm-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <table id="myProjectTable" class="table table-hover align-middle mb-0"
+                                        style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">id</th>
+                                                <th scope="col">标题</th>
+                                                <th scope="col">图片</th>
+                                                <th scope="col">内容</th>
+                                                <th scope="col">作者</th>
+                                                <th scope="col">发表时间</th>
+                                                <th scope="col">基本操作</th>
+                                            </tr>
+                                          
+                                        </thead>
+                                        <tbody>
+                                         <%
+										       IArticleService articleService = new ArticleService();
+										     
+										       List<Article> articles = articleService.find();
+										       
+										       int i =1;
+										       for(Article article:articles){
+										   %>
+                                            <tr>
+                                                <td>
+                                                    <span class="fw-bold"><%=i %></span>
+                                                </td>
+                                                <td>
+
+                                                    <span class="fw-bold ms-1"><%=article.getTitle() %></span>
+                                                </td>
+                                                <td >
+                                                
+                                                	
+                                                    <img class="avatar rounded-circle"  src="<%=Data.URL%>/Doctor/static/picture/<%=article.getPic()%>">
+                                                    
+                                                </td>
+                                                <td>
+                                                	<%=article.getContent() %>   
+                                                </td>
+                                                <td>
+                                                	<%=article.getAuthor() %>
+                                                </td>
+                                                <td>
+                                                    <%=article.getTime() %>
+                                                </td>
+                                                
+                                                <td>
+                                                    <div class="btn-group" role="group"
+                                                        aria-label="Basic outlined example">
+                                                        <!-- 编辑 -->
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            data-bs-toggle="modal" data-bs-target="#depedit"
+                                                            onclick="edit(this,<%=article.getId() %>)" >
+                                                            <i class="icofont-edit text-success"></i></button>
+                                                        
+                                                
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            
+                                         	<%i++;} %>
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row End -->
+                </div>
+            </div>
+
+            <!-- Modal Custom Settings-->
+
+			<%
+			String url1 =Data.URL+ "/article2?OP=add";
+			%>
+            <!-- 添加科普文章 -->
+            <div class="modal fade" id="depadd" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                       
+                            <h5 class="modal-title  fw-bold" id="depaddLabel" >添加科普文章</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="deadline-form">
+                                <form id="addfrm" action="<%=url1 %>" method="post" enctype="multipart/form-data" >
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1111" class="form-label">标题</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="deptwo" class="form-label">作者</label>
+                                        <input type="text" class="form-control" id="author" name="author">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="depone" class="form-label">图片</label>
+                                        <input type="file" class="form-control" id="pic" name="pic" >
+                                      
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="deptwo" class="form-label">时间</label>
+                                        <input type="text" class="form-control" id="time" name="time">
+                                    </div>
+                                    <label for="depthree" class="form-label">内容</label>
+                                    
+                                     <textarea class="form-control" id="content" name="content" rows="3" style="width: 300px;height: 150px"></textarea>
+                                    
+                                    <!-- end row -->
+                                    <!-- end row -->
+                                    <!-- end container-fluid -->
+                                </form>
+                               
+                            </div>
+                        </div>
+                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <input type="button" class="btn btn-primary" onclick="tj()" value="添加" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+       
+
+            <!-- 编辑科普文章-->
+            <%
+			String url3 =Data.URL+ "/article2?OP=doupdate";
+			%>
+            <div class="modal fade" id="depedit" tabindex="-1" aria-hidden="true"> 
+                <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title  fw-bold" id="depeditLabel"> 编辑科普文章</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="deadline-form">
+                                <form id="updatefrm" action="<%=url3 %>" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput11111" class="form-label">标题</label>
+                                        <input type="text" class="form-control" id="updatetitle" name="updatetitle">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="depone" class="form-label">作者</label>
+                                        <input type="text" class="form-control" id="updateauthor" name="updateauthor">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="depone" class="form-label">图片</label>
+                                        <input type="file" class="form-control" id="updatepic" name="updatepic">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="deptwo" class="form-label">时间</label>
+                                        <input type="text" class="form-control" id="updatetime" name="updatetime">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="depthree" class="form-label">内容</label>
+                                        <textarea class="form-control"  id="updatecontent" name="updatecontent"
+                                        rows="3" style="width: 300px;height: 150px"></textarea>
+                                   <input type="hidden" name="id" id="ID">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <input type="button" class="btn btn-primary" onclick="updatetj()" value="保存" />  
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <!-- Jquery Core Js -->
+    <script src="static/js/libscripts.bundle.js"></script>
+    <!-- JAVASCRIPT -->
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/metisMenu.min.js"></script>
+    <script src="static/js/simplebar.min.js"></script>
+    <script src="static/js/waves.min.js"></script>
+
+    <script src="static/js/bundle.js"></script>
+
+    <!-- Summernote js -->
+    <script src="static/js/summernote-bs4.min.js"></script>
+
+    <!-- init js -->
+    <script src="static/js/summernote.init.js"></script>
+
+    <script src="static/js/app.js"></script>
+
+    <!-- Plugin Js-->
+    <script src="static/js/dataTables.bundle.js"></script>
+
+    <!-- Jquery Page Js -->
+    <script src="static/js/template.js"></script>
+    <script>
+
+    
+    function tj(){
+    	//根据id获取html页面中的表单，并提交
+    	window.document.getElementById("addfrm").submit();
+    }
+    
+    function updatetj(){
+    	//根据id获取html页面中的表单，并提交
+    	window.document.getElementById("updatefrm").submit();
+    }
+
+
+
+	//编辑方法
+    function edit(obj,id){
+        var $td= $(obj).parents('tr').children('td');
+       
+        var title = $td.eq(1).text().replace(/\s*/g,"");
+        var content = $td.eq(2).text().replace(/\s*/g,"");
+        var pic = $td.eq(3).text().replace(/\s*/g,"");
+        var author = $td.eq(4).text().replace(/\s*/g,"");
+        var time = $td.eq(5).text().replace(/\s*/g,"");
+        //alert(tel);
+
+		//var i= address.toString();
+       
+        $("#ID").val(id); 
+      //  $("#updateName").css('color','red').val("qqq"+tel);
+      $("#updatetitle").val(title);
+        $("#updatecontent").val(content);
+        $("#updatepic").val(pic);
+      //  $("#updateTel").css('color','red').css('text-align','left');
+        $("#updateauthor").val(author);
+        $("#updatetime").val(time);
+      
+    }
+
+	
+	        
+        // project data table
+        $(document).ready(function () {
+            $('#myProjectTable')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    columnDefs: [
+                        { targets: [-1, -3], className: 'dt-body-right' }
+                    ]
+                });
+            $('.deleterow').on('click', function () {
+                var tablename = $(this).closest('table').DataTable();
+                tablename
+                    .row($(this)
+                        .parents('tr'))
+                    .remove()
+                    .draw();
+
+            });
+        });
+    </script>
+</body>
+
+</html>

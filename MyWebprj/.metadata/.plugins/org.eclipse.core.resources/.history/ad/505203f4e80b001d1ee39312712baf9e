@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="./css/style.css">
+</head>
+ <body>
+<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+<header data-block-type="headers" data-id="1">
+  <div class="container">
+  </div>
+</header>
+<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+<header data-block-type="headers" data-id="1" class="fp-active">
+</header>
+<div class="container">
+</div>
+<span id="i5pwv">服务器信息管理</span>
+<div data-v-36c163cb="" id="i1bmg">
+</div>
+<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+<div class="row" id="ipgef">
+  <div class="cell" id="ii8ns">
+    <img id="iq7ch" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3R5bGU9ImZpbGw6IHJnYmEoMCwwLDAsMC4xNSk7IHRyYW5zZm9ybTogc2NhbGUoMC43NSkiPgogICAgICAgIDxwYXRoIGQ9Ik04LjUgMTMuNWwyLjUgMyAzLjUtNC41IDQuNSA2SDVtMTYgMVY1YTIgMiAwIDAgMC0yLTJINWMtMS4xIDAtMiAuOS0yIDJ2MTRjMCAxLjEuOSAyIDIgMmgxNGMxLjEgMCAyLS45IDItMnoiPjwvcGF0aD4KICAgICAgPC9zdmc+"/>
+  </div>
+  <div class="cell" id="i6xph">
+    <div id="iyh8g">服务器信息管理系统
+    </div>
+  </div>
+</div>
+<div class="panel">
+  <div class="row" id="isgfq">
+    <div class="cell" id="ibpje">
+      <div id="i6fo5">服务器版本  :
+      </div>
+    </div>
+    <div class="cell" id="irtik">
+      <div id="ieptm">Insert your text here
+      </div>
+    </div>
+  </div>
+  <div class="row" id="i392o">
+    <div class="cell" id="i1zbz">
+      <div id="i4y23">IP                 :
+      </div>
+    </div>
+    <div class="cell" id="iomr3">
+      <div id="i29nh">Insert your text here
+      </div>
+    </div>
+  </div>
+  <div class="row" id="i28he">
+    <div class="cell" id="iykbp">
+      <div id="ikrqh">端口             ：
+        <span id="ibbkd"></span>
+      </div>
+    </div>
+    <div class="cell" id="ivfzh">
+      <div class="row">
+        <div class="cell">
+          <div id="iffw8">Insert your text here
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="i4tg8">修改
+  </div>
+</div>
+<footer data-block-type="footers" data-id="1" class="fdb-block footer-small fp-active">
+  <div class="container">
+    <div class="row text-center align-items-center">
+      <div class="col-12 col-md-8">
+      </div>
+    </div>
+  </div>
+</footer>
+          </body>
+        <html>

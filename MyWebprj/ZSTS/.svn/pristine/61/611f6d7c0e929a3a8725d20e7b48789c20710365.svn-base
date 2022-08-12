@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>邮箱验证找回密码</title>
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+ <style>
+ body {
+	background-size: cover;
+	background-image: url("images/back4.jpg");
+	background-repeat: no-repeat;
+	background-position: right top;
+	background-attachment: fixed;
+}
+ </style>
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div style="height:150px;"></div>
+                <span style="font-family: 华文行楷;font-size: 36px;color:black;"><a href="http://192.168.1.167:8080/ZSTS/web/ForgetPassword.jsp">验证失败,请检查您的用户名和邮箱是否正确</a></span>
+        </div>
+    </div>
+</body>
+</html>

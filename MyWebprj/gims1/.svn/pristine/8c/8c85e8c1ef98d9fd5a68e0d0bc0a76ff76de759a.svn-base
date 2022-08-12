@@ -1,0 +1,13 @@
+package com.gxnu.action;
+
+import com.gxnu.entity.Guide;
+import com.gxnu.service.IGuideservice;
+import com.gxnu.service.imp.Guideservice;
+
+public class TEst {
+public static void main(String[] args) {
+	Guide guide =new Guide("test","xxx");
+	IGuideservice iGuideservice =new Guideservice();
+	iGuideservice.add(guide);
+}
+}

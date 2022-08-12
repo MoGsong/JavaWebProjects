@@ -1,0 +1,14 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+public class Log implements Serializable{
+	private int id;
+	private String name;
+	private int source;
+	private int target;
+	private Timestamp time;
+	private String content;
+	
+}

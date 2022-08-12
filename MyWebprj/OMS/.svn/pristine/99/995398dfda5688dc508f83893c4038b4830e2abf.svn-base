@@ -1,0 +1,340 @@
+<%@page import="com.gxnu.entity.Inventory"%>
+<%@page import="com.gxnu.service.imp.InventoryService"%>
+<%@page import="com.gxnu.service.IInventoryService"%>
+<%@page import="com.gxnu.entity.Measure"%>
+<%@page import="com.gxnu.service.imp.MeasureService"%>
+<%@page import="com.gxnu.service.IMeasureService"%>
+<%@page import="com.gxnu.entity.DrugInfo"%>
+<%@page import="java.util.List"%>
+<%@page import="com.gxnu.service.imp.DrugInfoService"%>
+<%@page import="com.gxnu.service.IDrugInfoService"%>
+<%@page import="com.gxnu.util.Data"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>:: --电子处方</title>
+<!-- Summernote css -->
+<link href="static/css/summernote-bs4.css" rel="stylesheet"
+	type="text/css">
+<!-- plugin css file  -->
+<link rel="stylesheet" href="static/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="static/css/dataTables.bootstrap5.min.css">
+<!-- project css file  -->
+<link rel="stylesheet" href="static/css/ihealth.style.min.css">
+<!-- Bootstrap Css -->
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css">
+<!-- Icons Css -->
+<link href="static/css/icons.min.css" rel="stylesheet" type="text/css">
+<!-- App Css-->
+<link href="static/css/app.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+	<div id="ihealth-layout" class="theme-tradewind">
+
+		<!-- sidebar -->
+
+		<!-- main body area -->
+		<div class="main px-lg-4 px-md-4">
+
+			<!-- Body: Header -->
+
+
+			<!-- Body: Body -->
+			<div class="body d-flex py-lg-3 py-md-2">
+				<div class="container-xxl">
+					<div class="row align-items-center">
+						<div class="border-0 mb-4">
+							<div
+								class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+								<h3 class="fw-bold mb-0">电子处方</h3>
+								<div class="col-auto d-flex w-sm-100">
+									<button type="button"
+										class="btn btn-primary btn-set-task w-sm-100"
+										data-bs-toggle="modal" data-bs-target="#depadd">
+										<i class="icofont-plus-circle me-2 fs-6"></i>添加
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Row end  -->
+					<div class="row clearfix g-3">
+						<div class="col-sm-12">
+							<div class="card mb-3">
+								<div class="card-body">
+									<table id="myProjectTable"
+										class="table table-hover align-middle mb-0"
+										style="width: 100%">
+										<thead>
+											<tr>
+												<th scope="col">序号</th>
+												<th scope="col">药品名称</th>
+												<th scope="col">数量</th>
+												<th scope="col">单位</th>
+												<th scope="col">用法</th>
+												<th scope="col">价格</th>
+												<th scope="col">基本操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><span class="fw-bold">1</span></td>
+												<td><span class="fw-bold ms-1">DR.Joan Dyer</span></td>
+												<td><img class="avatar rounded-circle"
+													src="static/picture/avatar6.jpg" alt=""></td>
+												<td>40</td>
+												<td>40</td>
+												<td>40</td>
+												<td>
+													<div class="btn-group" role="group"
+														aria-label="Basic outlined example">
+														<button type="button" class="btn btn-outline-secondary"
+															data-bs-toggle="modal" data-bs-target="#depedit">
+															<i class="icofont-edit text-success"></i>
+														</button>
+														<button type="button"
+															class="btn btn-outline-secondary deleterow">
+															<i class="icofont-ui-delete text-danger"></i>
+														</button>
+													</div>
+												</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Row End -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">取消</button>
+					<button type="submit" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+
+			<!-- Modal Custom Settings-->
+
+
+			<!-- 添加药品-->
+			<div class="modal fade" id="depadd" tabindex="-1" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title  fw-bold" id="depaddLabel">添加药品</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+
+							<div class="deadline-form">
+								<form>
+									<div class="mb-3">
+										<label for="exampleFormControlInput1111" class="form-label">药品名</label>
+										<div class="col-md-6">
+											<select name="druginfo" class="form-control" id="druginfo"
+												onchange="xxx()">
+												<option value="0" selected="selected">--请选择药品--</option>
+												<%
+													//查询所有药品  获取动态权限，添加下拉框
+													IDrugInfoService drugInfoService = new DrugInfoService();
+													List<DrugInfo> drugInfos = drugInfoService.findAll();
+													//查询库存表，获取药品数量
+													IInventoryService inventoryService = new InventoryService();
+													List<Inventory> inventorys = inventoryService.find();
+													for (DrugInfo drugInfo : drugInfos) {
+												%>
+												<option value="<%=drugInfo.getId()%>"><%=drugInfo.getName()%>
+												</option>
+												<%
+													}
+												%>
+											</select>&nbsp;&nbsp;
+										</div>
+										<div class="col-sm-6">
+										<label for="depone" class="form-label">库存数量</label> <input
+											type="text" class="form-control" id="have" readonly="ture" >
+									</div>
+									</div>
+
+									<div class="col-sm-6">
+										<label for="depone" class="form-label">数量</label> <input
+											type="text" class="form-control" name="num">
+									</div>
+									<div class="col-sm-6">
+										<label for="deptwo" class="form-label">单位</label>
+										<div class="col-md-6">
+											<select name="measure" class="form-control">
+
+												<%
+													//查询所有单位  获取动态权限，添加下拉框
+													IMeasureService measureService = new MeasureService();
+													List<Measure> measures = measureService.find();
+													for (Measure measure : measures) {
+												%>
+												<option value="<%=measure.getId()%>"><%=measure.getName()%>
+												</option>
+												<%
+													}
+												%>
+											</select>&nbsp;&nbsp;
+										</div>
+									</div>
+
+									<label for="depthree" class="form-label">用法</label>
+									<textarea class="form-control" rows="3"
+										style="width: 300px; height: 150px"></textarea>
+									<div class="col-sm-6">
+										<label for="deptwo" class="form-label">价格</label> <input
+											type="text" class="form-control" id="deptwo">
+									</div>
+									<!-- end row -->
+									<!-- end row -->
+									<!-- end container-fluid -->
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary">添加</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 编辑-->
+			<div class="modal fade" id="depedit" tabindex="-1" aria-hidden="true">
+				<div
+					class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title  fw-bold" id="depeditLabel">编辑</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+
+							<div class="deadline-form">
+								<form>
+									<div class="mb-3">
+										<label for="exampleFormControlInput11111" class="form-label">药品名称</label>
+										<input type="text" class="form-control"
+											id="exampleFormControlInput11111" value="Admissions">
+									</div>
+									
+									<div class="col-sm-6">
+										<label for="depone" class="form-label">数量</label> <input
+											type="text" class="form-control" id="depone">
+									</div>
+									<div class="col-sm-6">
+										<label for="deptwo" class="form-label">单位</label> <input
+											type="text" class="form-control" id="deptwo">
+									</div>
+									<div class="col-sm-6">
+										<label for="depthree" class="form-label">用法</label>
+										<textarea class="form-control" rows="3"
+											style="width: 300px; height: 150px"></textarea>
+									</div>
+									<div class="col-sm-6">
+										<label for="deptwo" class="form-label">价格</label> <input
+											type="text" class="form-control" id="deptwo">
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-primary">保存</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Jquery Core Js -->
+	<script src="static/js/libscripts.bundle.js"></script>
+	<!-- JAVASCRIPT -->
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/bootstrap.bundle.min.js"></script>
+	<script src="static/js/metisMenu.min.js"></script>
+	<script src="static/js/simplebar.min.js"></script>
+	<script src="static/js/waves.min.js"></script>
+
+	<script src="static/js/bundle.js"></script>
+
+	<!-- Summernote js -->
+	<script src="static/js/summernote-bs4.min.js"></script>
+
+	<!-- init js -->
+	<script src="static/js/summernote.init.js"></script>
+
+	<script src="static/js/app.js"></script>
+
+	<!-- Plugin Js-->
+	<script src="static/js/dataTables.bundle.js"></script>
+
+	<!-- Jquery Page Js -->
+	<script src="static/js/template.js"></script>
+	<script>
+		// project data table
+		$(document).ready(function() {
+			$('#myProjectTable').addClass('nowrap').dataTable({
+				responsive : true,
+				columnDefs : [ {
+					targets : [ -1, -3 ],
+					className : 'dt-body-right'
+				} ]
+			});
+			$('.deleterow').on('click', function() {
+				var tablename = $(this).closest('table').DataTable();
+				tablename.row($(this).parents('tr')).remove().draw();
+
+			});
+		});
+	</script>
+	<script>
+		function xxx(){
+			
+			 var myselect=document.getElementById("druginfo");
+			 var index = myselect.selectedIndex;  // selectedIndex是所选中的项的index
+			$.ajax({
+				async:	false,			//默认为true，即请求为异步请求
+				timeout:5000,			//设置请求超时时间（毫秒）
+				dataType:"json",		//返回的数据类型
+				type:	"post",			//设置请求方式
+				url:	"<%=Data.URL%>/ajax", //设置请求URL
+				data : "option=" + myselect.options[index].value, //设置传递的参数值
+				success : function(msg) { //设置响应成功之后执行的回调函数
+					
+					
+					
+					$("#have").val(msg.num);
+					
+					
+				},
+				error : function() { //设置响应失败之后执行的回调函数
+					alert("失败喽");
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>

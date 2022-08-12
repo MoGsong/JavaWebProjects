@@ -1,0 +1,41 @@
+<%@page import="com.gxnu.entity.Patient"%>
+<%@page import="com.gxnu.entity.Doctor"%>
+<%@page import="com.gxnu.util.Data"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>开处方</title>
+<%
+	Object obj1 = session.getAttribute(Data.DOCTOR);
+	Doctor doctor = new Doctor();
+	if (obj1 != null) {
+		
+	}
+	out.print(doctor);
+	Object obj2 = session.getAttribute(Data.PATIENT);
+	Patient patient = new Patient();
+	if (obj2 != null) {
+		patient = (Patient) obj2;
+	}
+	
+%>
+<script>
+	function tj() {
+		//根据id获取html页面中的表单，并提交
+		window.document.getElementById("frm").submit();
+	}
+</script>
+</head>
+<body>
+	<form class="form-horizontal m-t" id="frm"
+		action="<%=Data.URL%>/recipe?OP=new" method="post">
+		<input type="hidden" name="doctorid" value="<%=doctor.getId() %>" /> 
+		<input type="hidden" name="patientid" value="<%=patient.getId() %>" /> 
+		<a href="Recipe.jsp" onclick="tj()">开电子处方</a>
+		
+	</form>
+</body>
+</html>

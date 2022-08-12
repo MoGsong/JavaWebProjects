@@ -1,0 +1,101 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.gxnu.entity.Picture;
+import com.gxnu.service.IPictureService;
+import com.gxnu.service.imp.PictureService;
+@WebServlet(urlPatterns = {"/picture"})
+//指定当前servlet支持接收页面提交过来的非文本数据，如文件
+@MultipartConfig
+public class PictureAction extends HttpServlet {
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String op =  req.getParameter("OP");
+		if(op != null && "add".equals(op)) {
+			//获取页面提交的请求参数，即添加的信息
+			String url = req.getParameter("url");
+			String content = req.getParameter("content");
+			
+			//获取页面文件框中的文件
+	    	Part file = req.getPart("pic");
+	    	  
+	    	//通过http协议头部消息中的key “Content-Disposition”可以获取上传文件的一些信息
+	    	//System.out.println(file.getHeader("Content-Disposition"));
+	    	String info = file.getHeader("Content-Disposition");
+	    	//截取文件的后缀
+	    	int b =  info.indexOf("filename=\"")+10;
+	    	int e = info.length()-1;
+	    	String filename = info.substring(b, e);
+
+	          
+//	  	      部署根目录
+//	  	  (D:\Java\JDK8\eclipse\Project\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\prj0712\head.png)
+	        String savePath = getServletContext().getRealPath("/")+filename;
+	        System.out.println(savePath);
+	  		file.write(savePath);
+	  		
+
+			
+			//调用业务方法，实现添加
+			IPictureService pictureService = new PictureService();
+			Picture picture = new Picture(filename,url,content);
+			pictureService.add(picture);
+			
+			
+			//跳转到下一资源
+			resp.sendRedirect("http://192.168.1.128:8080/ZSTS/web/picture.jsp");
+		}else if(op != null && "toupdate".equals(op)){
+
+			//获取页面传递的请求参数，即修改的记录id信息
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			
+			//调用业务方法，实现根据id查询某条记录的全部信息
+			IPictureService pictureService = new PictureService();
+			Picture picture = pictureService.findById(id);
+			//把完整的邮件信息存放到请求对象中
+			req.setAttribute("PICTURE",picture );
+			
+			//跳转下一资源，请求转发
+			req.getRequestDispatcher("web/UpdatePicture.jsp").forward(req, resp);
+			
+		}else if(op != null && "doupdate".equals(op)) {
+			
+		}else {
+			//获取页面传递的请求参数，即删除的记录id信息
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			
+			
+			//调用业务方法，根据id删除某条记录
+			IPictureService pictureService = new PictureService();
+			pictureService.remove(id);
+			
+			//跳转到下一资源
+			resp.sendRedirect("http://192.168.1.128:8080/ZSTS/web/picture.jsp");
+		}
+	}
+
+}

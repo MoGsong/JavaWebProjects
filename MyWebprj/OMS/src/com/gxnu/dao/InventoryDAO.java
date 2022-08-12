@@ -1,0 +1,199 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.entity.DrugInfo;
+import com.gxnu.entity.Inventory;
+import com.gxnu.entity.Measure;
+
+/**
+ *持久层类
+ */
+public class InventoryDAO extends C3P0BaseDAO {
+	
+	//添加药品库存
+	/**
+	 * 添加药品库存
+	 * @param inventory 表示添加的药品库存信息，形如：{id=1，name=访客}
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void add(Inventory inventory) throws ClassNotFoundException, SQLException {
+		//1.加载驱动  2.连接rbac数据库
+		Connection conn=super.getConnection();
+		
+		//3.基于数据库连接对象java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement,需绑定一个sql语句
+		//此处的？表示“占位符”，下标从1开始递增
+		PreparedStatement pstmt=
+				conn.prepareStatement("insert into inventory(drug_info,measure,xprice,num,yuliu) values(?,?,?,?,?)");
+		
+		//设置点位符的值，注意数据类型的选择
+		pstmt.setInt(1,inventory.getDrugInfo().getId());
+		pstmt.setInt(2,inventory.getMeasur().getId());
+		pstmt.setInt(3,inventory.getXprice());
+		pstmt.setInt(4,inventory.getNum());
+		pstmt.setString(5, inventory.getYuliu());
+		//执行SQL语句，结果会同步到MySQL表中
+		pstmt.executeUpdate();
+		
+		//关闭数据库连接
+		super.closeConnection(conn);
+		
+	}
+	
+	//修改角色
+	/**
+	 * 修改角色
+	 * @param inventory 表示待加的角色信息{id=1，name=访客}
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void merge(Inventory inventory) throws ClassNotFoundException, SQLException {
+		//1.加载驱动  2.连接rbac数据库
+		Connection conn=super.getConnection();
+		
+		//3.基于数据库连接对象java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement,需绑定一个sql语句
+		//此处的？表示“占位符”，下标从1开始递增
+		PreparedStatement pstmt=
+				conn.prepareStatement("update inventory set drug_info=?,measure=?,xprice=?,num=?,yuliu=? where id=?");
+		
+		//设置点位符的值，注意数据类型的选择
+		pstmt.setInt(1,inventory.getDrugInfo().getId());
+		pstmt.setInt(2,inventory.getMeasur().getId());
+		pstmt.setInt(3,inventory.getXprice());
+		pstmt.setInt(4,inventory.getNum());
+		pstmt.setString(5, inventory.getYuliu());
+		pstmt.setInt(6, inventory.getId());
+		
+		//执行SQL语句，结果会同步到MySQL表中
+		pstmt.executeUpdate();
+		
+		//关闭数据库连接
+		super.closeConnection(conn);
+		
+	}
+	
+	//删除角色
+	/**
+	 * 删除角色
+	 * @param inventory 表示待加的角色信息{id=1，name=访客}
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete(int id) throws ClassNotFoundException, SQLException {
+		//1.加载驱动  2.连接rbac数据库
+		Connection conn=super.getConnection();
+		
+		//3.基于数据库连接对象java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement,需绑定一个sql语句
+		//此处的？表示“占位符”，下标从1开始递增
+		PreparedStatement pstmt=
+				conn.prepareStatement("delete from inventory where id=?");
+		
+		//设置点位符的值，注意数据类型的选择
+		pstmt.setInt(1,id);
+		
+		//执行SQL语句，结果会同步到MySQL表中
+		pstmt.executeUpdate();
+		
+		//关闭数据库连接
+		super.closeConnection(conn);
+		
+	}
+	
+	
+	//查询药品库存
+	/**
+	 * 查询药品库存，查所有
+	 * @param parent 
+	 * @return 把结果集中的所有记录，包装成inventory对象，再存放到数组中
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Inventory> findAll() throws ClassNotFoundException, SQLException {
+		//定义数组
+		//Inventory[] inventorys = new Inventory[findTotal()];   //默认每个元素均为null
+		List<Inventory> inventorys = new ArrayList<Inventory>();
+		
+		Connection conn = super.getConnection();     			 //1、加载驱动 2、连接rbacpro数据库
+		PreparedStatement pstmt = 								 //3、基于数据库连接对象 java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement，须绑定一个SQL语句
+				conn.prepareStatement("select * from inventory"); 	 //此处的？表示“占位符”，下标从1开始递增，须在后续设置其值													
+		
+		ResultSet rs = pstmt.executeQuery();	    	//4、基于数据操作对象java.sql.PreparedStatement，创建数据库结果集对象java.sql.ResultSet
+		
+		//通过循环遍历结果集
+		while(rs.next()) {
+		DrugInfo drugInfo = new DrugInfoDAO().findById(rs.getInt("drug_info"));	
+		Measure measure = new MeasureDAO().findById(rs.getInt("measure"));	
+			
+			inventorys.add(new Inventory(rs.getInt("id"),drugInfo,measure,rs.getInt("xprice"),rs.getInt("num"),rs.getString("yuliu")));
+		}		
+		return inventorys;	//返回集合
+	}
+
+	
+	public List<Inventory> findAll(int currentPage,int pageSize) throws ClassNotFoundException, SQLException {
+		//定义数组
+		//Inventory[] inventorys = new Inventory[findTotal()];   //默认每个元素均为null
+		List<Inventory> inventorys = new ArrayList<Inventory>();
+		
+		Connection conn = super.getConnection();     			 //1、加载驱动 2、连接rbacpro数据库
+		PreparedStatement pstmt = 								 //3、基于数据库连接对象 java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement，须绑定一个SQL语句
+				conn.prepareStatement("select * from inventory order by id limit ?,?"); 	 //此处的？表示“占位符”，下标从1开始递增，须在后续设置其值													
+		pstmt.setInt(1, (currentPage-1)*pageSize);
+		pstmt.setInt(2, pageSize);
+		ResultSet rs = pstmt.executeQuery();	    	//4、基于数据操作对象java.sql.PreparedStatement，创建数据库结果集对象java.sql.ResultSet
+		
+		//通过循环遍历结果集
+		while(rs.next()) {
+			DrugInfo drugInfo = new DrugInfoDAO().findById(rs.getInt("drug_info"));	
+			Measure measure = new MeasureDAO().findById(rs.getInt("measure"));	
+				
+				inventorys.add(new Inventory(rs.getInt("id"),drugInfo,measure,rs.getInt("xprice"),rs.getInt("num"),rs.getString("yuliu")));
+		}		
+		return inventorys;	//返回集合
+	}
+	
+	/**
+	 * 查询角色，查单个
+	 * @param id 
+	 * @return 把结果集中的所有记录，包装成inventory对象，再存放到数组中
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public Inventory findById(int id) throws ClassNotFoundException, SQLException {
+		Inventory inventory = new Inventory();
+		//1、加载驱动 2、连接rbacpro数据库
+		Connection conn = super.getConnection();
+		
+		//3、基于数据库连接对象 java.sql.Connection,创建数据库操作对象java.sql.PreparedStatement，须绑定一个SQL语句
+		//此处的？表示“占位符”，下标从1开始递增，须在后续设置其值
+		PreparedStatement pstmt = conn.prepareStatement("select * from inventory where id=?");
+		pstmt.setInt(1, id);
+		//4、基于数据操作对象java.sql.PreparedStatement，创建数据库结果集对象java.sql.ResultSet
+		ResultSet rs = pstmt.executeQuery();
+		
+		//因为结果集中只有一条记录，无需循环遍历结果集，只需要让指针移动一次即可
+		if(rs.next()) {
+			//每循环一次，获取指针定位的某条记录上的数据
+			int inventoryid = rs.getInt("id");  //id为字段名称 
+			
+			DrugInfo drugInfo = new DrugInfoDAO().findById(rs.getInt("drug_info"));	
+			Measure measure = new MeasureDAO().findById(rs.getInt("measure"));	
+			
+			int xprice = rs.getInt("xprice"); //name为字段名称
+			int num = rs.getInt("num"); //parent为字段名称 = rs.getString("name"); //name为字段名称
+			String yuliu = rs.getString("yuliu"); //name为字段名称
+
+			
+			inventory = new Inventory(inventoryid,drugInfo,measure,xprice,num,yuliu); //把数据包装成Inventory实体对象
+		}
+		//返回数组
+		return inventory;
+	}
+		
+}

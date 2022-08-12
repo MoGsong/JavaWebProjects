@@ -1,0 +1,126 @@
+package com.gxnu.action.doctor;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import javax.sound.midi.Soundbank;
+
+import com.gxnu.dao.DoctorDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Post;
+import com.gxnu.entity.Unit;
+import com.gxnu.service.IDoctorService;
+import com.gxnu.service.IPostService;
+import com.gxnu.service.IUnitService;
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.PostService;
+import com.gxnu.service.imp.UnitService;
+import com.gxnu.util.Data;
+
+@WebServlet(urlPatterns = {"/doctors"})
+@MultipartConfig
+public class doctorsAction extends HttpServlet{
+
+	private String idcard;
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		   String op = req.getParameter("OP");	
+		  
+		   if(op!=null && "doupdate".equals(op)) {	
+			   
+			   System.out.println("程序运行到此了...........................");
+			//获取页面传递过来的请求参数，即修改的记录id信息
+			String strid = req.getParameter("id");	
+			System.out.println(strid);
+			int id=0;
+			if(strid!=null) {
+				id = Integer.parseInt(strid); 
+			}				
+			System.out.println(id);
+			//获取科室id
+			String strunitid = req.getParameter("unitid");				
+			int runitid=0;
+			if(strid!=null) {
+				runitid = Integer.parseInt(strunitid);			
+			}	
+			//根据科室id查找
+			IUnitService unitService=new UnitService();
+			Unit unit=unitService.find(runitid);
+			
+			
+			
+			//获取职位id
+			String strpostid = req.getParameter("postid");				
+			int postid=0;
+			if(strid!=null) {
+				postid = Integer.parseInt(strpostid);			
+			}	
+			//根据职位id查找
+			IPostService postService=new PostService();
+			Post post=postService.find(postid);
+			
+			
+			   
+				//获取页面提交过来的请求参数，即添加的记录信息
+				String name = req.getParameter("n1"); //获取页面的信息
+				System.out.println(name);
+				String sex = req.getParameter("n2");	
+				System.out.println(sex);
+				int age = Integer.parseInt( req.getParameter("n3"));//int类型需要Integer.parseInt强转	
+				System.out.println(age);
+				String password = req.getParameter("n4");
+				System.out.println(password);
+				String tel = req.getParameter("n5");
+				System.out.println(unit);
+				String email = req.getParameter("n6");	
+				System.out.println(post);
+				//String pic = req.getParameter("n7");
+				//System.out.println(pic);
+			    String username = req.getParameter("username");
+			    System.out.println(tel);
+			    String yuliu = req.getParameter("yuliu");
+			    System.out.println(email);
+			    
+			
+				   //获取上传的头像文件				
+				   Part file= req.getPart("pic");				   
+				   //通过http协议消息中key  Content-Disposition			 
+				    String info=file.getHeader("Content-Disposition");
+				    //截取文件的后缀
+				    int b=info.indexOf("filename=\"")+10;  //去文件名和忘记属性：如jsp等等
+				    int e=info.length()-1; 
+				   String filename=info.substring(b,e);
+				   System.out.println(filename);								    
+				     //调用业务方法，修改邮件信息			
+				    DoctorService doctorDAO=new DoctorService();  //修改要根据id
+			        Doctor doctor=new Doctor(id,name,sex,age,username,password,unit,post,filename,tel,email,yuliu);	
+					doctorDAO.update(doctor);
+				 
+				 
+			
+				//跳转到下个资源，请求转发
+		  		   resp.sendRedirect(Data.URL +"/Doctor/Login.jsp");
+		   
+		  		
+		   }			
+	}
+
+}

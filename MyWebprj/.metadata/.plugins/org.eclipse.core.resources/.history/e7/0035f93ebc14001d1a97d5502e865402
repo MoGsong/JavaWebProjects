@@ -1,0 +1,50 @@
+package com.gxnu.service.imp;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.gxnu.dao.UserDAO;
+import com.gxnu.entity.User;
+import com.gxnu.service.IUserService;
+
+public class UserService implements IUserService{
+
+	@Override
+	public void add(User user) {
+		 UserDAO userDao = new UserDAO();
+	        try {
+	            userDao.add(user);
+	        } catch (SQLException throwables) {
+	            //打印异常轨迹
+	            throwables.printStackTrace();
+	        } catch (ClassNotFoundException e) {
+	            e.printStackTrace();
+	        }
+		
+	}
+
+	@Override
+	public void remove(int id) {
+		
+		
+	}
+
+	@Override
+	public void update(User user) {
+		
+		
+	}
+
+	@Override
+	public User findById(int id) {
+		
+		return null;
+	}
+
+	@Override
+	public List<User> find() {
+		
+		return null;
+	}
+
+}

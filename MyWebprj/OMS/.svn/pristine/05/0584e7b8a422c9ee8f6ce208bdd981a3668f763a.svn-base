@@ -1,0 +1,59 @@
+package com.gxnu.action.doctor;
+
+import java.io.IOException;
+
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+
+import com.gxnu.entity.Inventory;
+
+import com.gxnu.service.IInventoryService;
+
+import com.gxnu.service.imp.InventoryService;
+
+
+@WebServlet(urlPatterns = { "/ajax" })
+public class Ajax extends HttpServlet {
+	// 继承父类javax.servlet.http.HttpServlet
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 不论get、post请求，均执行dopost方法
+		doPost(req, resp);
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String option = req.getParameter("option");
+
+		int drugid = 0;
+		if (option != null) {
+			drugid = Integer.parseInt(option);
+
+		}
+		
+		IInventoryService inventoryService = new InventoryService();
+		List<Inventory> inventorys = inventoryService.find();
+		resp.setHeader("Content-type", "text/json;charset=UTF-8");
+		resp.setContentType("text/json;charset=UTF-8");
+		for (Inventory inventory : inventorys) {
+			if (inventory.getDrugInfo().getId() == drugid) {
+				Gson gson = new Gson();
+				String listJson = gson.toJson(inventory);
+				System.out.println(listJson);
+				resp.getWriter().print(listJson.toString());
+				break;
+			}
+		}
+
+	
+
+	}
+}

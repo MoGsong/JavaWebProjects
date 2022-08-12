@@ -1,0 +1,97 @@
+package com.gxnu.service.imp;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.dao.DoctorDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.service.IDoctorService;
+/**
+ * Ȩ�޲�����Ӧ��ҵ����
+ * @author johny
+ * ҵ����������ó־ò㷽������ɾ���ҵ����
+ * �����쳣
+ */
+public class DoctorService implements IDoctorService{
+	@Override
+	public void add(Doctor doctor) {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		try {
+			doctorDAO.add(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void remove(int id) {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		Doctor doctor = new Doctor(); //id=0
+		doctor.setId(id);
+		try {
+			doctorDAO.delete(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void update(Doctor doctor) {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		try {
+			doctorDAO.update(doctor);
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Doctor find(int id) {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		Doctor doctor = new Doctor();
+		try {
+			doctor = doctorDAO.findByPrimaryKey(id);
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+		return doctor;
+	}
+
+	@Override
+	public List<Doctor> find() {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		try {
+			doctors = doctorDAO.findAll();
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+		return doctors;
+	}
+
+
+	@Override
+	public List<Doctor> findByUnit(int unitid) {
+		//�����־ò������
+		DoctorDAO doctorDAO = new DoctorDAO();
+		List<Doctor> doctors = new ArrayList<Doctor>();
+		try {
+			doctors = doctorDAO.findByUnitId(unitid);
+		} catch (ClassNotFoundException | SQLException e) {
+			//�����쳣����ӡ�쳣�Ĺ켣
+			e.printStackTrace();
+		}
+		return doctors;
+	}
+}

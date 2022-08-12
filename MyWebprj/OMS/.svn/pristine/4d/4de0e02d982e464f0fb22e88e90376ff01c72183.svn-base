@@ -1,0 +1,58 @@
+package com.gxnu.action.manage;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Schedule;
+import com.gxnu.service.IDoctorService;
+import com.gxnu.service.IScheduleService;
+import com.gxnu.service.imp.DoctorService;
+import com.gxnu.service.imp.ScheduleService;
+import com.gxnu.util.Data;
+
+
+@WebServlet("/schedule")
+public class ScheduleAction extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+	}
+
+ 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    String op = req.getParameter("OP");
+	    if(op!=null && op.equals("update")){
+			
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid!=null) {
+				id=Integer.parseInt(strid);
+			}
+			
+			 
+			int doctor_id = Integer.parseInt(req.getParameter("doctor"));
+			String week = String.valueOf(req.getParameter("week"));
+			String period = req.getParameter("period");
+			Timestamp  time = Timestamp.valueOf(req.getParameter("time"));
+			
+			IDoctorService dis = new DoctorService();
+			Doctor doctor = dis.find(doctor_id);
+			
+			IScheduleService iss = new ScheduleService();
+			Schedule schedule = new Schedule(id,doctor,week,period,time);
+			iss.update(schedule);
+			
+			
+			resp.sendRedirect(Data.URL+"Manage/Schedule/Schedule.jsp");//重新跳回页面，刷新
+			
+		}
+	}
+}

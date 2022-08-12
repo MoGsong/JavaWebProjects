@@ -1,0 +1,38 @@
+package com.gxnu.action;
+
+import com.gxnu.entity.Operator;
+import com.gxnu.service.IOperatorService;
+import com.gxnu.service.imp.OperatorService;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(urlPatterns = {"/loginAction"})
+//继承父类javax.servlet.http.HttpServlet
+public class Login extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        String username = req.getParameter("USERNAME");
+        String password = req.getParameter("PASSWORD");
+        String OP = req.getParameter("OP");
+        
+        if(OP!=null&&OP.equals("login")) {
+        	IOperatorService ios = new OperatorService();
+            Operator op = ios.find(username, password);
+            if(op.getId()>0) {
+                resp.sendRedirect("http://192.168.1.169:8080/ZSTS/web/main.jsp");
+            }else if(OP!=null&&OP.equals("exit")) {
+            	
+            }
+        }       
+    }
+}

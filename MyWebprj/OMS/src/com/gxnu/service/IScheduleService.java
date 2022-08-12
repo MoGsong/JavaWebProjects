@@ -1,0 +1,34 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.Schedule;
+/**
+ * 排班信息，业务层接口
+ * @author ymp0519
+ *
+ */
+public interface IScheduleService {
+	//增加排班
+	public void add(Schedule schedule);
+	//删除排班
+	public void remove(int id);
+	//修改排班
+	public void update(Schedule schedule);
+	//通过id寻找排班
+	public Schedule find(int id);
+	//寻找所有排班信息
+	public List<Schedule> findAll();
+	//分页，寻找部分排班信息
+	public List<Schedule> find(int currentPage,int pageSize);
+	//寻找某一科室中的值班时间段和周天相同的排班
+	public List<Schedule> find(int week,String period,int unitId);
+	
+	//寻找某医生的值班时间段和周天相同的排班
+		public List<Schedule> findByWeekByPeriodByDoctorId(int week,String period,int doctorId);
+
+	//通过doctorid寻找排班
+	public List<Schedule> findByDoctorId(int doctorid);
+
+	
+}

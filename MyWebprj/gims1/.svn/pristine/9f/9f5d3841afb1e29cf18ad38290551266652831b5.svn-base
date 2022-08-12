@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>政府网站_管理员登录</title>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #1AA7EC;
+	
+	overflow:hidden;
+}
+.STYLE1 {
+	color: #000000;
+	font-size: 12px;
+}
+-->
+</style>
+<script type="text/javascript">
+	function bt_login(){
+		//根据id获取html页面中的表单，并提交
+		window.document.getElementById("frm").submit();
+	}
+</script>
+</head>
+
+<body background="images/background_1.png" style="background-repeat:no-repeat ;background-size:100% 100%; background-attachment: fixed;">
+<!-- html表单标记，用于提交文本框中的数据
+	action属性用于指定表单提交的位置，此处为servlet，请求的url为http://192.168.1.163:8080/wyms/xxx
+	 method属性用于设置请求的方式，此处为post请求-->
+	<form id="frm" action="http://192.168.1.163:8080/GIMS/operator"
+		method="post" >
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><table width="362" border="1" border-style: align="center" cellpadding="0" cellspacing="0" background-color="#050505">
+     
+        <td height="400" ><table width="100%" height="65%" border="0" align="center" cellspacing="0" cellpadding="0">
+         
+          <tr>
+          <td></td>
+           <td width="100%%" height="35%" style="font-style: italic;font-family: fantasy;font-size: x-large;color: white;">欢迎使用登录系统</td>
+          
+           </tr>
+           
+              <tr width="100%" height="25%">
+                <td width="25%" ><div align="right"><span class="STYLE1" style="font-size: medium;color: white;">用户:</span></div></td>
+                <td width="50%"><div align="center">
+                  <input type="text" name="username" style="width:78%; height:35px; background-color:white-space; border:solid 1px #7dbad7; font-size:16px; color:	#080808">
+                </div></td>
+                
+              </tr>
+              
+              <tr width="100%" height="25%">
+                <td width="25%" ><div align="right"><span class="STYLE1" style="font-size: medium;color: white;">密码:</span></div></td>
+                <td width="50%" ><div align="center">
+                  <input type="password" name="pasword" style="width:78%; height:35px; background-color:white-space; border:solid 1px #7dbad7; font-size:16px; color:	#080808">
+                </div></td>
+              
+              </tr>
+              
+           	<tr>
+           	<td></td>
+            <td width="50%" ><div align="center">
+                <div align="center"><a href="http://192.168.1.163:8080/GIMS/web/main.jsp"><img src="images/dl.gif" width="60" height="25" border="0" onclick="bt_login()"></a></div></td>
+                
+           	</tr>
+           	
+        </table></td>
+      </tr>
+
+    </table>
+
+</form>
+</body>
+</html>

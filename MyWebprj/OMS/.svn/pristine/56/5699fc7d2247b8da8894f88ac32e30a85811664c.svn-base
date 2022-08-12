@@ -1,0 +1,190 @@
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.gxnu.entity.Unit;
+
+
+/**
+ * 科室信息持久层
+ * @author ymp0519
+ *
+ */
+
+
+public class UnitDAO  extends C3P0BaseDAO{
+
+/**
+ * 科室信息的添加
+ * @param unit
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void add(Unit unit) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+
+		PreparedStatement pstmt = 
+				conn.prepareStatement("insert into unit (name,principal,tel,address) values(?,?,?,?)");
+
+		pstmt.setString(1,unit.getName());
+		pstmt.setString(2,unit.getPrincipal());
+		pstmt.setString(3,unit.getTel());
+		pstmt.setString(4,unit.getAddress());
+
+		pstmt.executeUpdate();
+	
+		super.closeConnection(conn);
+	}
+
+/**
+ * 科室信息的修改
+ * @param unit
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void merge(Unit unit) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = 
+				conn.prepareStatement("update unit set name=?,principal=?,tel=?,address=?,yuliu=? where id=?");
+		
+		pstmt.setString(1,unit.getName());
+		pstmt.setString(2,unit.getPrincipal());
+		pstmt.setString(3,unit.getTel());
+		pstmt.setString(4,unit.getAddress());
+		pstmt.setString(5, unit.getYuliu());
+		pstmt.setInt(6,unit.getId());//id
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+/**
+ * 科室信息的修改
+ * @param unit
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public void delete(Unit unit) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("delete from unit where id=?");
+		pstmt.setInt(1, unit.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	/**
+	 * 通过id查找科室
+	 * @param id
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public Unit findById(int id) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		Unit unit  = new Unit();
+		PreparedStatement pstmt = conn.prepareStatement("select * from unit where id = ?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()){ 
+			String number = rs.getString("name");  
+			String address =rs.getString("address");
+			String tel= rs.getString("tel");
+			String principal = rs.getString("principal");
+			String yuliu= rs.getString("yuliu");
+
+			unit= new Unit(id,number,principal,tel,address,yuliu);
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return unit;
+	}
+
+	/**
+	 * 查询所有科室信息
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Unit> findAll() throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+		List<Unit> units = new ArrayList<Unit>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from unit");
+	
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			String number = rs.getString("name");  
+			String address =rs.getString("address");
+			String tel= rs.getString("tel");
+			String principal = rs.getString("principal");
+			String yuliu= rs.getString("yuliu");
+
+
+			units.add( new Unit(id,number,principal,tel,address,yuliu));
+			
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return units;
+	}
+	
+	
+/**
+ * 分页
+ * @param currentPage
+ * @param pageSize
+ * @return
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ */
+	public List<Unit> findAll(int currentPage, int pageSize) throws ClassNotFoundException, SQLException {
+		
+		Connection conn = super.getConnection();
+		
+
+		List<Unit> units = new ArrayList<Unit>();
+		
+		int i = 0;
+		
+		PreparedStatement pstmt = conn.prepareStatement("select * from unit limit ?,?");
+		pstmt.setInt(1,(currentPage-1)*pageSize);
+		pstmt.setInt(2,pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next()){  
+			int id = rs.getInt("id");
+			String number = rs.getString("name");  
+			String principal = rs.getString("principal");
+			String tel= rs.getString("tel");
+			String address =rs.getString("address");
+			String yuliu= rs.getString("yuliu");
+			units.add( new Unit(id,number,principal,tel,address,yuliu));
+			}  
+			rs.close(); 
+			
+		
+		super.closeConnection(conn);
+		return units;
+	}
+	
+	
+}

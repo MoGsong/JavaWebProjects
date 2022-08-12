@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommitComments>	<CommitComment>患者进入聊天室</CommitComment>
+	<CommitComment>医生进入聊天室</CommitComment>
+	<CommitComment>聊天室v2.0 消息滚轮指定，断开连接</CommitComment>
+	<CommitComment>聊天1.0+</CommitComment>
+	<CommitComment>聊天窗口v1.0</CommitComment>
+	<CommitComment>v2.0 权限管理+菜单管理</CommitComment>
+	<CommitComment>V1.0+ 权限表的增删改查</CommitComment>
+	<CommitComment>v1.0
+操作员表和菜单表的CURD</CommitComment>
+	<CommitComment>V2.0
+实现重置密码限时跳转</CommitComment>
+	<CommitComment>v1.0
+忘记密码-&gt;邮箱验证-&gt;发送邮件-&gt;通过邮件连接修改密码</CommitComment>
+</CommitComments>

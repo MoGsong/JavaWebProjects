@@ -1,0 +1,27 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = {"/sendEmail"})
+public class SendEmail extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String user = req.getParameter("USER");
+		String email = req.getParameter("EMAIL");
+		//调用业务方法，遍历所有操作员，比较用户名和邮箱，若查到此用户，则拿到这个Operator对象进行后续操作，否则返回找回密码页面
+	}
+
+	
+}

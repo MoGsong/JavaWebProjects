@@ -1,0 +1,29 @@
+package com.gxnu.test;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import com.gxnu.dao.DoctorDAO;
+import com.gxnu.dao.PatientDAO;
+import com.gxnu.entity.Doctor;
+import com.gxnu.entity.Patient;
+import com.gxnu.entity.Registration;
+import com.gxnu.service.imp.RegistrationService;
+
+public class RegistrationTest {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		Doctor doc = new DoctorDAO().findByPrimaryKey(4);
+		Patient pat = new PatientDAO().findByPrimaryKey(1);
+		Registration registration = new Registration(doc,pat,Timestamp.valueOf("2022-08-06 18:53:22"),Timestamp.valueOf("2022-08-06 15:43:22"),"123",null);
+		RegistrationService registrationService = new RegistrationService();
+		System.out.println("这是第一条数据，id为空"+ registration.toString());
+		registrationService.add(registration);
+		Registration registration2 = registrationService.find(3);
+		System.out.println("这是写入数据库后读出的数据"+ registration2.toString());
+		Registration registration3 = new Registration(doc,pat,Timestamp.valueOf("2022-08-06 05:05:05"),Timestamp.valueOf("2022-08-06 15:43:22"),"123",null);
+		registrationService.update(registration3);
+		Registration registration4 = registrationService.find(3);
+		System.out.println("这是修改数据库数据后读出的数据"+ registration4.toString());
+		registrationService.remove(5);
+	}
+}

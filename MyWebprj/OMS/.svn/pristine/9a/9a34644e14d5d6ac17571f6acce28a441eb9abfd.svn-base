@@ -1,0 +1,20 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.Inventory;
+
+public interface IInventoryService {
+	    //添加库存
+		public void add(Inventory inventory);
+		//删除库存
+		public void remove(int id);
+		//修改库存
+		public void update(Inventory inventory);
+		//查询库存，单个
+		public Inventory find(int id);
+		//查询库存，所有
+		public List<Inventory> find();
+		public List<Inventory> find(int currentPage,int pageSize);
+		
+}

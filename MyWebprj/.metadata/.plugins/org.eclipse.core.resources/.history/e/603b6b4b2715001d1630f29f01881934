@@ -1,0 +1,5 @@
+package com.gxnu.util;
+
+public class Wrap {
+	String message = "";
+}

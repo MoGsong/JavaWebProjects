@@ -1,0 +1,18 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.Log;
+
+public interface ILogService {
+	public void add(Log log);
+	//用户删除
+	public void remove(int id);
+
+	//单个用户查询
+	public User findById(int id);
+	//查询用户
+	public List<User> find();
+	
+	public List<User> findAll(String name, int id);
+}

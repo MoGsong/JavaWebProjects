@@ -1,0 +1,86 @@
+package com.gxnu.action.manage;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import com.gxnu.service.IUnitService;
+
+import com.gxnu.entity.Unit;
+
+import com.gxnu.service.imp.UnitService;
+import com.gxnu.util.Data;
+
+@WebServlet(urlPatterns = { "/unit" })
+@MultipartConfig
+public class UnitAction extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		doPost(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String op = req.getParameter("OP");
+		if (op != null && "add".equals(op)) {//添加
+		
+			String name = req.getParameter("addName");
+			String principal = req.getParameter("addPrincipal");
+			String tel = req.getParameter("addTel");
+			String address = req.getParameter("addAddress");
+		
+			Unit unit = new Unit(name,principal,tel,address);
+			IUnitService unitService = new UnitService();
+			unitService.add(unit);
+			
+			// 跳转到下一个资源
+			resp.sendRedirect(Data.URL+"/Manage/Unit.jsp");
+			
+		}else if (op != null && "update".equals(op)) {
+			
+			String strid = req.getParameter("updateId");
+			int id = 0;
+			if (strid != null) {
+				id = Integer.parseInt(strid);
+			}
+			
+			String name = req.getParameter("updateName").trim();
+			String principal = req.getParameter("updatePrincipal").trim();
+			String tel = req.getParameter("updateTel").trim();
+			String address = req.getParameter("updateAddress").trim();
+			System.out.println(name);
+			System.out.println(tel);
+			
+			// 调用业务方法
+			Unit unit = new Unit(id, name,principal,tel,address);
+			System.out.println(unit);
+			IUnitService unitService = new UnitService();
+			unitService.update(unit);
+			resp.sendRedirect(Data.URL+"/Manage/Unit.jsp");
+			
+		} else {
+			String strid = req.getParameter("id");
+			int id = 0;
+			if (strid != null) {
+				id = Integer.parseInt(strid);
+			}
+
+			// 调用业务方法，实现删除某条科室记录
+			IUnitService unitService = new UnitService();
+			unitService.remove(id);
+
+			// 跳转到下一资源
+			resp.sendRedirect(Data.URL+"/Manage/Unit.jsp");
+
+		}
+	}
+}

@@ -1,0 +1,140 @@
+<%@page import="com.gxnu.util.Data"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+	background-size: cover;
+	background-image: url("images/back1.jpg");
+	background-repeat: no-repeat;
+	background-position: right top;
+	background-attachment: fixed;
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+
+<title>掌上唐山登录</title>
+
+<link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+<link href="css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+<link href="css/animate.css" rel="stylesheet">
+<link href="css/style.css?v=2.2.0" rel="stylesheet">
+
+<link rel="stylesheet" href="css/layui.css" media="all">
+
+</head>
+
+<body class="gray-bg">
+<div style="height:70px;"></div>
+	<table class="middle-box text-center loginscreen  animated fadeInDown">
+		<tr >
+			<td>
+				<div class="layui-carousel" id="test10" style="margin-right: 40px">
+					<div carousel-item="">
+						<div>
+							<img style="width:800px;height:400px;" src="images/7.jpg">
+						</div>
+						<div>
+							<img style="width:800px;height:400px;" src="images/8.png">
+						</div>
+						<div>
+							<img style="width:800px;height:400px;" src="images/9.jpg">
+						</div>
+					</div>
+				</div>
+			</td>
+			<td width="30%">
+				<div >
+					<p style="font-size: 60px;font-family: 楷体;color: black;" class="logo-name">掌&nbsp;上&nbsp;唐&nbsp;山</p>
+				</div>
+				<h3 style="font-family: 华文行楷;">欢迎使用</h3>
+
+				<form class="m-t" role="form" action="<%=Data.URL%>/loginAction?OP=login" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" name="USERNAME" placeholder="请输入用户名" required="">
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control" name="PASSWORD" placeholder="请输入密码" required="">
+					</div>
+					<button type="submit" class="btn btn-primary block full-width m-b">登录</button>
+					<p class="text-muted text-center">
+						<a href="ForgetPassword.jsp">
+						<span style="color: black">
+							忘记密码
+						</span>
+						</a> 
+						
+						 <a href="">
+						 <span style="color: black">
+						 ？| &nbsp;注册账号
+						 </span>
+						 </a>
+						
+					</p>
+				</form>
+			</td>
+		</tr>
+	</table>
+
+	<!-- Mainly scripts -->
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/bootstrap.min.js?v=3.4.0"></script>
+	<script src="js/layui.js"></script>
+	<script>
+		layui.use([ 'carousel', 'form' ],
+				function() {
+					var carousel = layui.carousel, form = layui.form;
+
+					//图片轮播
+					carousel.render({
+						elem : '#test10',
+						width : '720px',
+						height : '300px',
+						interval : 3000
+					});
+
+					//事件
+					carousel.on('change(test4)', function(res) {
+						console.log(res)
+					});
+
+					var $ = layui.$, active = {
+						set : function(othis) {
+							var THIS = 'layui-bg-normal', key = othis
+									.data('key'), options = {};
+
+							othis.css('background-color', '#5FB878').siblings()
+									.removeAttr('style');
+							options[key] = othis.data('value');
+							ins3.reload(options);
+						}
+					};
+
+					 // 自动播放控制
+					  form.on('select(autoplay)', function (obj) {
+					    // debugger;
+					    var autoplayValue = parseInt(obj.value);
+					    ins3.reload({
+					      autoplay: isNaN(autoplayValue) ? obj.value : autoplayValue
+					    });
+					  })
+					  
+					  $('.demoSet').on('keyup', function(){
+					    var value = this.value
+					    ,options = {};
+					    if(!/^\d+$/.test(value)) return;
+					    
+					    options[this.name] = value;
+					    ins3.reload(options);
+					  });
+				});
+	</script>
+
+</body>
+
+</html>

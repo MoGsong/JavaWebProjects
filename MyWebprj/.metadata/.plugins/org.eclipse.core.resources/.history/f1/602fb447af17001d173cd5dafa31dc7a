@@ -1,0 +1,26 @@
+package com.gxnu.test;
+
+import java.util.List;
+
+import com.gxnu.entity.Menu;
+import com.gxnu.entity.Operator;
+import com.gxnu.entity.Role;
+import com.gxnu.service.IMenuService;
+import com.gxnu.service.IOperatorService;
+import com.gxnu.service.imp.MenuService;
+import com.gxnu.service.imp.OperatorService;
+
+public class Test {
+	  public void getPath() throws IOException {
+
+		    //获取当前文件所在的路径
+		    String localPath = this.getClass().getResource("").getPath();
+		    System.out.println("localPath = " + localPath);
+		    //localPath = /C:/work/idea-WorkSpace/my-demo/demo-file/target/classes/com/zgd/demo/file/path/
+		}
+
+	public static void main(String[] args) {
+		
+	}
+
+}

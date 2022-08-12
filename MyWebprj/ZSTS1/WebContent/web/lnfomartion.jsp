@@ -1,0 +1,113 @@
+<%@page import="com.gxnu.util.Data"%>
+<%@page import="com.gxnu.service.IInformationService"%>
+<%@page import="com.gxnu.entity.lnformation"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.gxnu.service.InformationService"%>
+<%@page import="com.gxnu.entity.Menu"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	
+	    //直接获取数据库信息，显示出界面
+	    IInformationService iis = new InformationService();
+		List<lnformation> informations = new ArrayList<lnformation>();
+		informations = iis.find() ;
+%>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<title>菜单</title>
+<link href="css/style.css?v=2.2.0" rel="stylesheet">
+</script>
+<script>
+  
+</script>
+</head>
+
+<body style="background-color: white">
+	<div class="col-lg-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>民俗信息管理</h5>
+				<div class="ibox-tools">
+					<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+					</a> <a class="dropdown-toggle" data-toggle="dropdown"
+						href="table_data_tables.html#"> <i class="fa fa-wrench"></i>
+					</a> <a class="close-link"> <i class="fa fa-times"></i>
+					</a>
+				</div>
+
+			<div class="ibox-content">
+
+			</div>
+				<%String url = Data.URL +  "/web/addlnfomartion.jsp";%>
+				<div class=""  >
+			           <a  href="<%=url %>" class="btn btn-primary ">添加行</a>
+			      </div></br>
+					<table border="0" style="width: 100%">
+						<tr>
+							<td>
+								<table border="0">
+
+
+									<table
+			                  		class="table table-striped table-bordered table-hover  dataTable"
+										id="editable" aria-describedby="editable_info" width="100%">
+
+
+										<tr align="center" class="gradeA even">
+											<td class="sorting_1" >编号</td>
+											<td class=" ">类型</td>
+											<td class=" ">内容</td>
+											<td class="center ">图片</td>
+											<td class="center ">更新时间</td>
+											<td class="center ">基本操作</td>
+										</tr>
+
+										<%
+											//循环遍历集合，每循环一次，生成一行html<tr></tr>，在每一个单元格中 <td></td>,把静态数据改成数据库表中的记录
+											for (lnformation information : informations) {
+												
+										%>
+
+										<tr align="center" class="gradeA even">
+											<td class="sorting_1"><%=information.getId()%></td>
+											<td class=" "><%=information.getTypes()%></td>
+											<td class=" "><%=information.getContent()%></td>
+											<td class="center "><%=information.getPicture()%></td>
+											<td class="center "><%=information.getTime()%></td>
+											
+																																
+											
+											    <td class="center ">
+												<a href="<%=Data.URL%>/xxx?OP=toupdate&id=<%=information.getId()%>">编辑</a> &nbsp;&nbsp;&nbsp;&nbsp; <a
+												
+											href="<%=Data.URL%>/xxx?id=<%=information.getId()%>"  style="color: green;">删除</a></td>
+										</tr>
+										<%
+											}
+										%>
+									</table>
+									</div>
+
+									<table style="width: 100%" border="0">
+										<tr>
+											<td class="dataTables_info" id="editable_info" role="alert"
+												aria-live="polite" aria-relevant="all">显示 1 到 10 项，共 ?
+												项</td>
+											<td><div
+													style="width: 60%; margin: 0 auto; align: right">
+													<table border="1" class="t" id="editable"
+														aria-describedby="editable_info"
+														style="width: 60%; align: right">
+														
+													</table>
+												</div></td>
+									</table>
+</body>
+</html>

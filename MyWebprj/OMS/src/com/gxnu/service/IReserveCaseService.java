@@ -1,0 +1,20 @@
+package com.gxnu.service;
+
+import java.util.List;
+
+import com.gxnu.entity.ReserveCase;
+
+public interface IReserveCaseService {
+	//在可预约情况表中条件记录
+	public void add(ReserveCase reservecase);
+	//根据id在可预约情况表中删除记录
+	public void remove(int id);
+	//根据id修改可预约情况表中的一条记录
+	public void update(ReserveCase reservecase);
+	//查询可预约情况表中的所以记录
+	public List<ReserveCase> findAll();
+	//根据id查询单条记录
+	public ReserveCase findById(int id);
+	//根据医生id查询多条记录
+	public List<ReserveCase> findByDoctorId(int doctorid);
+}

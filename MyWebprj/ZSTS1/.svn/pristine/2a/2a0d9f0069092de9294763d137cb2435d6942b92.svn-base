@@ -1,0 +1,220 @@
+<%@page import="com.gxnu.entity.Authorization"%>
+<%@page import="com.gxnu.service.imp.Authorizationservice"%>
+<%@page import="com.gxnu.service.IAuthorizationservice"%>
+<%@page import="com.gxnu.util.Data"%>
+<%@page import="com.gxnu.entity.Operator"%>
+<%@page import="com.gxnu.entity.Menu"%>
+<%@page import="java.util.List"%>
+<%@page import="com.gxnu.service.imp.MenuService"%>
+<%@page import="com.gxnu.service.IMenuService"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>掌上唐山</title>
+<link rel="stylesheet" href="layui-v2.6.8/layui/css/layui.css">
+</head>
+<body>
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo layui-hide-xs layui-bg-black">引导页</div>
+			<!-- 头部区域（可配合layui 已有的水平导航） -->
+			<ul class="layui-nav layui-layout-left">
+				<!-- 移动端显示 -->
+				<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm"
+					lay-header-event="menuLeft"><i
+					class="layui-icon layui-icon-spread-left"></i></li>
+
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item"><a href="javascript:;"></a>
+				<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm"
+					lay-header-event="menuLeft"><i
+					class="layui-icon layui-icon-spread-left"></i></li>
+
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item"><a href="javascript:;"></a>
+				<li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm"
+					lay-header-event="menuLeft"><i
+					class="layui-icon layui-icon-spread-left"></i></li>
+
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item"><a href="javascript:;"></a><li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm"
+					lay-header-event="menuLeft"><i
+					class="layui-icon layui-icon-spread-left"></i></li>
+
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item layui-hide-xs"><a href=""></a></li>
+				<li class="layui-nav-item"><a href="javascript:;"></a>
+					
+					</li>
+				<li class="layui-nav-item layui-hide-xs">
+					<!-- span可以，div不可以？？？ --> <span
+					style="text-align: center; width: 300px; float: left; color: white; font-size: 16px; display: block; height: 60px; line-height: 60px; margin-left: 18px"
+					id="jnkc"> <script type="text/javascript">
+						function showLocale() {
+							var now = new Date();
+							var yy = now.getFullYear();
+							var MM = now.getMonth() + 1;
+							var dd = now.getDate();
+							var hh = now.getHours();
+							if (hh < 10)
+								hh = '0' + hh;
+							var mm = now.getMinutes();
+							if (mm < 10)
+								mm = '0' + mm;
+							var ss = now.getSeconds();
+							if (ss < 10)
+								ss = '0' + ss;
+							var day = now.getDay();
+							var days = [ "一", "二", "三", "四", "五", "六", "天" ];
+							var str = "<span>" + yy + "年" + MM + "月" + dd
+									+ "日&emsp;" + hh + ":" + mm + ":" + ss
+									+ "&emsp;星期" + days[day - 1] + "</span>";
+							return (str);
+						}
+						function tick() {
+							var today;
+							today = new Date();
+							document.getElementById("jnkc").innerHTML = showLocale();
+							window.setInterval("tick()", 1000);
+						}
+						tick();
+					</script>
+				</span>
+				</li>
+
+			</ul>
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item layui-hide layui-show-md-inline-block">
+					<a href="javascript:;"> <img src="images/9.jpg"
+						class="layui-nav-img"> <%
+ 	Object obj = session.getAttribute("OPERATOR");
+ 	Operator op = new Operator();
+ 	if (obj != null) {
+ 		op = (Operator) obj;
+ 	}
+ 	out.print(op.getUsername());
+ %>
+				</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="<%=Data.URL%>/loginAction?OP=exit">退出</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+					<a href="javascript:;"> <i
+						class="layui-icon layui-icon-more-vertical"></i>
+				</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<%
+						//获取当前登录的操作员的角色，并查询对应的权限
+						int roleid = op.getRole().getId();
+						IAuthorizationservice authorizationservice = new Authorizationservice();
+						List<Authorization> authorizations = authorizationservice.findbyRloe(roleid);
+						
+						IMenuService ims = new MenuService();
+						List<Menu> fathers = ims.findByParent(0);
+						for (int i = 0; i < fathers.size(); i++) {
+							for (Authorization aux : authorizations) {
+								if (fathers.get(i).getId() == aux.getMenu().getId()) {
+					%>
+					<li class="layui-nav-item layui-nav-itemed">
+						<div style="direction: none;">
+							<a href="<%=fathers.get(i).getURL()%>" target="IFrameBox"><%=fathers.get(i).getName()%></a>
+						</div>
+						<dl class="layui-nav-child">
+							<%
+								//fathers.get(i).getId()结果1或2
+											List<Menu> sons = ims.findByParent(fathers.get(i).getId());
+											for (Menu son : sons) {
+												for (Authorization au : authorizations) {
+													if (son.getId() == au.getMenu().getId()) {
+							%>
+							<dd>
+								<a href="<%=son.getURL()%>"><%=son.getName()%></a>
+							</dd>
+							<%
+								break;
+													}
+												}
+											}
+							%>
+						</dl>
+					</li>
+					<%
+						break;
+								}
+							}
+						}
+					%>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body" style="width: 86%;">
+			<!-- 内容主体区域 -->
+			<div style="padding: 0px; width: 100%; height: 800px;">
+				<iframe name="IFrameBox" src="Welcome.jsp" frameborder="1"
+					width="100%" height="100%" scrolling="No" noresize="noresize"></iframe>
+			</div>
+		</div>
+
+		<div align="center" class="layui-footer" style="font-size:18px;font-family: 楷体;">
+			<!-- 底部固定区域 -->
+			广西师范大学蓝桥六班第四小组
+		</div>
+	</div>
+	<script src="layui-v2.6.8/layui/layui.js"></script>
+	<script>
+		//JS 
+		layui
+				.use(
+						[ 'element', 'layer', 'util' ],
+						function() {
+							var element = layui.element, layer = layui.layer, util = layui.util, $ = layui.$;
+
+							//头部事件
+							util
+									.event(
+											'lay-header-event',
+											{
+												//左侧菜单事件
+												menuLeft : function(othis) {
+													layer.msg('展开左侧菜单的操作', {
+														icon : 0
+													});
+												},
+												menuRight : function() {
+													layer
+															.open({
+																type : 1,
+																content : '<div style="padding: 15px;">处理右侧面板的操作</div>',
+																area : [
+																		'260px',
+																		'100%' ],
+																offset : 'rt' //右上角
+																,
+																anim : 5,
+																shadeClose : true
+															});
+												}
+											});
+
+						});
+	</script>
+</body>
+</html>

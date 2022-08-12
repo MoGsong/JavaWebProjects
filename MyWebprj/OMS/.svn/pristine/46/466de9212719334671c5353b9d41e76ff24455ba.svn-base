@@ -1,0 +1,50 @@
+package com.gxnu.action.patient;
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.entity.Feedback;
+import com.gxnu.service.IFeedbackService;
+import com.gxnu.service.imp.FeedbackService;
+import com.gxnu.util.Data;
+
+
+@WebServlet(urlPatterns = {"/feedback"})
+public class FeedbackAction extends HttpServlet{
+	//继承父类javax.servlet.http.HttpServlet
+		@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			//不论get、post请求，均执行dopost方法
+			doPost(req, resp);
+			
+		}
+		@Override
+		protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			
+			String op=req.getParameter("OP");
+			/**
+			 * 添加留言反馈
+			 */
+			if (op!=null&&"add".equals(op)) {
+						   //获取页面传递过来的请求参数，即添加的记录id信息
+							String content=req.getParameter("content");
+							String time=req.getParameter("time");
+							String yuliu=req.getParameter("yuliu");
+							
+							System.out.println("输出获取的信息"+content+time+yuliu);
+							//调用业务方法，实现添加某条留言反馈记录
+							Feedback feedback=new Feedback(content,Timestamp.valueOf(time),yuliu);
+							System.out.println(feedback);
+							IFeedbackService feedbackService=new FeedbackService();
+							feedbackService.add(feedback);
+			
+							//跳转到留言反馈页面
+							resp.sendRedirect(Data.URL+"/Patient/Feedback.jsp");
+	 }
+			}
+}

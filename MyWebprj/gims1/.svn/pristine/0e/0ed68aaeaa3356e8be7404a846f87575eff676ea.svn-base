@@ -1,0 +1,110 @@
+package com.gxnu.action;
+
+import java.io.IOException;
+
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.gxnu.entity.AboutUs;
+import com.gxnu.service.IAboutUsService;
+import com.gxnu.service.imp.AboutUsService;
+
+@WebServlet(urlPatterns = {"/aboutUsAction"})
+public class AboutUsAction extends HttpServlet{
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req,resp);
+	}
+
+ 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String OP = req.getParameter("OP");
+		/* 增加部分——删去
+		if(OP!=null && OP.equals("add"))
+		{
+			
+			String name = req.getParameter("c_tel");
+			String tel = String.valueOf(req.getParameter("c_tel"));
+			String address = req.getParameter("c_address");
+			String synopsis = req.getParameter("c_synopsis");
+			
+			IAboutUsService eis_add = new AboutUsService();
+			AboutUs aboutUs = new AboutUs(name,address,tel,synopsis);
+			eis_add.add(aboutUs);
+			
+			resp.sendRedirect("http://192.168.1.131:8080/prj0717/tab/tab.jsp");
+			
+		}else //“关于我们”只有一条记录，id=1
+		//无需通过查看表单，然后选择某一条记录通过servlet传递其id进行修改
+
+			if(OP!=null && OP.equals("toUpdate")){
+			
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid!=null) {
+				id=Integer.parseInt(strid);
+			}
+			
+		
+			IAboutUsService eis = new AboutUsService();
+			AboutUs aboutUs = eis.find(id);
+			
+
+
+	        req.setAttribute("aboutUs",aboutUs);
+	        req.getRequestDispatcher("tab/updateAboutUs.jsp").forward(req,resp);
+			
+			
+		}else
+		 */	 if(OP!=null && OP.equals("doUpdate")){
+			/*
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid!=null) {
+				id=Integer.parseInt(strid);
+			}
+			*/
+			 
+			int id=1;
+			String name = req.getParameter("c_name");
+			String tel = String.valueOf(req.getParameter("c_tel"));
+			String address = req.getParameter("c_address");
+			String synopsis = req.getParameter("c_synopsis");
+			
+			
+			
+			IAboutUsService eis = new AboutUsService();
+			AboutUs aboutUs = new AboutUs(id,name,address,tel,synopsis);
+			System.out.println(id);
+			System.out.println(aboutUs.toString());
+			eis.update(aboutUs);
+			
+			
+			resp.sendRedirect("http://192.168.1.131:8080/GIMS/web/AboutUs.jsp");
+			
+		}/*else {
+		
+			
+			String strid = req.getParameter("id");
+			int id = 0;
+			if(strid!=null) {
+				id=Integer.parseInt(strid);
+			}
+			
+			
+	
+			IAboutUsService eis = new AboutUsService();
+			eis.remove(id);
+			
+			
+			resp.sendRedirect("http://192.168.1.131:8080/prj0717/web/tab.jsp");
+		}
+		*/
+	}
+}

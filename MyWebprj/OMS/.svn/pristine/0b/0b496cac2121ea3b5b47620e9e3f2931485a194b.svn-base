@@ -1,0 +1,127 @@
+package com.gxnu.entity;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+import com.gxnu.entity.Doctor;
+
+
+public class Schedule implements Serializable{
+
+	private int id;
+	//private Unit unit;
+	private Doctor doctor;
+	private String period;//时间段
+	private String week;
+	private Timestamp day;
+	private String yuliu;
+	/**
+	 * 无参构造方法
+	 */
+	public Schedule() {
+		super();
+	}
+	/**
+	 * 无id，构造方法
+	 * @param unit
+	 * @param doctor
+	 * @param period
+	 * @param week
+	 * @param day
+	 * @param yuliu
+	 */
+	public Schedule(Doctor doctor, String period, String week, Timestamp day, String yuliu) {
+		super();
+		this.doctor = doctor;
+		this.period = period;
+		this.week = week;
+		this.day = day;
+		this.yuliu = yuliu;
+	}
+
+	/**
+	 * 有id，构造方法
+	 * @param id
+	 * @param unit
+	 * @param doctor
+	 * @param period
+	 * @param week
+	 * @param day
+	 * @param yuliu
+	 */
+	public Schedule(int id, Doctor doctor, String period, String week, Timestamp day, String yuliu) {
+		super();
+		this.id = id;
+		this.doctor = doctor;
+		this.period = period;
+		this.week = week;
+		this.day = day;
+		this.yuliu = yuliu;
+	}
+	
+	
+	
+	/**
+	 * 没有预留的构造方法
+	 * @param id
+	 * @param doctor
+	 * @param period
+	 * @param week
+	 * @param day
+	 */
+	public Schedule(int id, Doctor doctor, String period, String week, Timestamp day) {
+		super();
+		this.id = id;
+		this.doctor = doctor;
+		this.period = period;
+		this.week = week;
+		this.day = day;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Doctor getDoctor() {
+		return doctor;
+	}
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+	public String getPeriod() {
+		return period;
+	}
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+	public String getWeek() {
+		return week;
+	}
+	public void setWeek(String week) {
+		this.week = week;
+	}
+	public Timestamp getDay() {
+		return day;
+	}
+	public void setDay(Timestamp day) {
+		this.day = day;
+	}
+	public String getYuliu() {
+		return yuliu;
+	}
+	public void setYuliu(String yuliu) {
+		this.yuliu = yuliu;
+	}
+	@Override
+	public String toString() {
+		return "Schedule [id=" + id + ", doctor=" + doctor + ", period=" + period + ", week=" + week + ", day=" + day
+				+ ", yuliu=" + yuliu + "]";
+	}
+	
+	
+	
+	
+	
+}

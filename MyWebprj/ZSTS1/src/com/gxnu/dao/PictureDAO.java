@@ -1,0 +1,144 @@
+
+package com.gxnu.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gxnu.entity.Picture;
+
+/**
+ * 图片表的CURD
+ * @author hjj
+ *
+ */
+
+public class PictureDAO extends C3P0BaseDAO{
+	
+	/**
+	 * 添加图片
+	 * @param picture
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void add(Picture picture) throws ClassNotFoundException, SQLException {
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("insert into picture(id,name,URL,content) values(?,?,?,?)");
+		pstmt.setInt(1, picture.getId());
+		pstmt.setString(2, picture.getName());
+		pstmt.setString(3, picture.getURL());
+		pstmt.setString(4, picture.getContent());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	/**
+	 * 根据id删除某一张照片在数据库中的记录
+	 * @param picture
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void delete(Picture picture) throws ClassNotFoundException, SQLException {
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("delete from picture where id=?");
+		pstmt.setInt(1, picture.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	
+	/**
+	 * 根据id修改某一条记录信息
+	 * @param picture
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public void merger(Picture picture) throws ClassNotFoundException, SQLException {
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("update picture set name=?,URL=?,content=? where id=?");
+		pstmt.setString(1, picture.getName());
+		pstmt.setString(2, picture.getURL());
+		pstmt.setString(3, picture.getContent());
+		pstmt.setInt(4, picture.getId());
+		pstmt.executeUpdate();
+		super.closeConnection(conn);
+	}
+	
+	/**
+	 * 查询所有照片信息
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Picture> findAll() throws ClassNotFoundException, SQLException {
+		List<Picture> pics = new ArrayList<Picture>();
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("select * from picture");
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String url = rs.getString("URL");
+			String content = rs.getString("content");
+			pics.add(new Picture(id,name,url,content));
+		}
+		super.closeConnection(conn);
+		return pics;
+	}
+	
+	
+	/**
+	 * 根据id查询某一照片信息
+	 * @param id
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public Picture findById(int id) throws ClassNotFoundException, SQLException {
+		Picture pic = new Picture();
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("select * from picture where id=?");
+		pstmt.setInt(1, id);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int pid = rs.getInt("id");
+			String name = rs.getString("name");
+			String url = rs.getString("URL");
+			String content = rs.getString("content");
+			pic = new Picture(pid,name,url,content);
+		}
+		super.closeConnection(conn);
+		return pic;
+	}
+
+	
+	/**\
+	 * 分页查询记录
+	 * @param currentPage
+	 * @param pageSize
+	 * @return
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public List<Picture> findAll(int currentPage, int pageSize) throws ClassNotFoundException, SQLException {
+		List<Picture> pics = new ArrayList<Picture>();
+		Connection conn = super.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement("select * from picture order by id limit ?,?");
+		pstmt.setInt(1,  (currentPage-1)*pageSize);
+		pstmt.setInt(2, pageSize);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String url = rs.getString("URL");
+			String content = rs.getString("content");
+			pics.add(new Picture(id,name,url,content));
+		}
+		super.closeConnection(conn);
+		return pics;
+	}
+	
+}
