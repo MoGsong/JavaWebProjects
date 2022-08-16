@@ -6,8 +6,10 @@
 		<item key="wholeword" value="true"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=""/>
+		<item key="selection" value="ProSheet"/>
 		<list key="findhistory">
+			<item value="ProCell"/>
+			<item value="ISO-8859-1"/>
 			<item value="widnow"/>
 			<item value="disconn"/>
 			<item value="record"/>
@@ -21,10 +23,10 @@
 			<item value="/Manage"/>
 			<item value="notice"/>
 			<item value="effect"/>
-			<item value="element"/>
-			<item value="Menu1"/>
 		</list>
 		<list key="replacehistory">
+			<item value="ProSheet"/>
+			<item value="UTF-8"/>
 			<item value=""/>
 			<item value="yuliu"/>
 			<item value="url"/>
@@ -33,13 +35,11 @@
 			<item value="Menu1"/>
 			<item value="Data.URL"/>
 			<item value="Menu"/>
-			<item value="UTF-8"/>
 			<item value="gxnu"/>
 			<item value="对话hua"/>
 			<item value="Dialogue"/>
 			<item value="dialogue"/>
 			<item value="消息记录"/>
-			<item value="log"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

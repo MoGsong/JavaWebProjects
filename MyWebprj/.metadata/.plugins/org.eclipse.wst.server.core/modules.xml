@@ -2,4 +2,5 @@
 <modules>
   <module moduleId="org.eclipse.jst.jee.server:ZSTS" serverId="Tomcat v9.0 Server at localhost (2)"/>
   <module moduleId="org.eclipse.jst.jee.server:GIMS" serverId="Tomcat v9.0 Server at localhost (2)"/>
+  <module moduleId="org.eclipse.jst.jee.server:excelpro" serverId="Tomcat v9.0 Server at localhost (2)"/>
 </modules>

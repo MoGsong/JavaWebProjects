@@ -1,7 +1,0 @@
-package com.gxnu.service.imp;
-
-import com.gxnu.service.IDialogueService;
-
-public class DialogueService implements IDialogueService{
-
-}

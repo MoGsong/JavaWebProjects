@@ -1,5 +1,0 @@
-package com.gxnu.service;
-
-public interface IDialogueService {
-
-}
